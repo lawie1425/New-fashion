@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fashion Hub Uganda - Shop Latest Trends</title>
+    <style>
+        :root {
+            --primary-color: #e91e63;
+            --secondary-color: #2d3436;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', sans-serif;
+            margin: 0;
+            background: #f8f9fa;
+        }
+
+        /* Navigation Bar */
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--secondary-color);
+            padding: 10px 20px;
+            color: white;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .nav-buttons button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+
+        .nav-buttons button:hover {
+            background: #c2185b;
+        }
+
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+                            url('https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            color: white;
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        .search-bar {
+            max-width: 600px;
+            margin: 20px auto;
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 15px;
+            border-radius: 25px;
+            border: 2px solid var(--primary-color);
+            font-size: 16px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-bottom: 2px solid #eee;
+        }
+
+        .product-info {
+            padding: 15px;
+        }
+
+        .product-price {
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+
+        .btn {
+            background: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .tagline {
+            text-align: center;
+            padding: 40px 20px;
+            background: white;
+        }
+
+        .tagline h2 {
+            color: var(--secondary-color);
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        /* Floating Button */
+        .floating-dealer-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #007bff;
+            color: white;
+            padding: 25px 35px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            animation: pulse 2s infinite;
+            transition: all 0.3s ease;
+        }
+
+        .floating-dealer-btn:hover {
+            background: #0056b3;
+            transform: scale(1.05);
+            animation: none;
+        }
+
+        /* Dealer Panel */
+        .dealer-panel {
+            position: fixed;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            visibility: hidden;
+        }
+
+        .dealer-panel.active {
+            top: 0;
+            visibility: visible;
+        }
+
+        .panel-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            transform: translateY(-50px);
+            opacity: 0;
+            transition: all 0.3s 0.2s ease-out;
+        }
+
+        .dealer-panel.active .panel-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .cta-btn {
+            background: #007bff;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            transition: background 0.3s ease;
+        }
+
+        .dealer-panel:hover {
+            background: #262727bb;
+        }
+
+        .dealer-benefits {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin: 1.5rem 0;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 768px) {
+            .floating-dealer-btn {
+                top: 20px;
+                right: 10px;
+                padding: 12px 18px;
+                font-size: 1.9rem;
+            }
+
+            .panel-content {
+                padding: 1.5rem;
+            }
+        }
+        .whatsapp-support {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+
+        }
+
+        .whatsapp-support a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            background: #25D366;
+            color: white;
+            padding: 15px;
+            border-radius: 50px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .whatsapp-support a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+            background: #128C7E;
+        }
+
+        .whatsapp-support i {
+            font-size: 32px;
+            margin-right: 10px;
+        }
+
+        .tooltip {
+            display: none;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            margin-right: 8px;
+        }
+
+        .whatsapp-support:hover .tooltip {
+            display: inline-block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="nav-bar">
+        <div class="logo">Fashion Hub UG</div>
+        <div class="nav-buttons">
+
+            <button onclick="filterProducts('all')">All Products</button>
+            <button onclick="filterProducts('men')">Men</button>
+            <button onclick="filterProducts('women')">Women</button>
+            <button onclick="filterProducts('kids')">Kids</button>
+            <a href="cart.html">🛒 Cart <span class="cart-counter">0</span></a>
+            <a href="my order.html"> My orders <span class="cart-counter">0</span></a>
+    
+            <button onclick="window.location.href='auth.html'">Sign Up</button>
+            <button onclick="window.location.href='auth.html'">Login</button>
+        </div>
+    </div>
+  </div>
+    </nav>
+
+    <div class="hero">
+        <h1>Shop Uganda's Finest Fashion Online</h1>
+        <p>Discover curated collections from local designers and international brands</p>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="🔍 Search dresses, shoes, accessories...">
+        </div>
+    </div>
+    <button class="floating-dealer-btn" onclick="toggleDealerPanel()">
+        Dealers Click Here<br>to Join
+    </button>
+
+    <div id="dealerPanel" class="dealer-panel">
+        <div class="panel-content">
+            <h2>For Dealers: Grow Your Business With Us!</h2>
+            <div class="dealer-benefits">
+                <ul>
+                    <li>📈 Access thousands of active buyers</li>
+                    <li>🛍️ List your products easily</li>
+                    <li>💼 Manage your inventory in real-time</li>
+                    <li>🚀 Boost your sales with our platform</li>
+                </ul>
+            </div>
+            <div class="cta-buttons">
+                <button class="cta-btn" onclick="location.href='dealer.html'">
+                    Sign up as Dealer
+                </button>
+                <button class="cta-btn" onclick="location.href='dealer.html'">
+                    Login
+                </button>
+                <p class="dealer-stats">Already helping <span data-count="500">500+</span> dealers succeed</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="tagline">
+        <h2>New Arrivals 🌟</h2>
+        <p>Shop the latest trends in Ugandan fashion</p>
+    </div>
+
+    <div class="product-grid">
+        <div class="product-card"
+             data-product-id="1"
+             data-product-name="African Print Maxi Dress"
+             data-product-price="80000"
+             data-product-image="https://images.unsplash.com/photo-1581044777550-4cfa60707c03?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+             data-product-category="women"
+             data-product-description="Elegant African print maxi dress for women|Material:Cotton|Sizes:S,M,L|Care:Hand wash">
+            <a href="product-details.html?id=1&name=African%20Print%20Maxi%20Dress&image=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1581044777550-4cfa60707c03%3Fixlib%3Drb-1.2.1%26auto%3Dformat%26fit%3Dcrop%26w%3D634%26q%3D80&price=80000&description=Elegant%20African%20print%20maxi%20dress%7CMaterial%3ACotton%7CSizes%3AS%2CM%2CL%7CCare%3AHand%20wash">
+                <img src="https://images.unsplash.com/photo-1581044777550-4cfa60707c03?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+                     alt="African Print Dress"
+                     class="product-image">
+            </a>
+            <div class="product-info">
+                <h3>African Print Maxi Dress</h3>
+                <p class="product-price">UGX 80,000</p>
+                <button class="btn" onclick="addToCart(this)">Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="product-card"
+             data-product-id="1.1"
+             data-product-name="69 T-Shirt"
+             data-product-price="30000"
+             data-product-image="men_clothes/69 t-shirt.png"
+             data-product-category="men"
+             data-product-description="Cool '69' printed t-shirt for men|Material:Polyester|Sizes:M,L,XL|Care:Machine wash">
+            <a href="product-details.html?id=1.1&name=69%20T-Shirt&image=men_clothes%2F69%20t-shirt.png&price=30000&description=Cool%20'69'%20printed%20t-shirt%7CMaterial%3APolyester%7CSizes%3AM%2CL%2CXL%7CCare%3AMachine%20wash">
+                <img src="men_clothes/69 t-shirt.png"
+                     alt="69 T-Shirt"
+                     class="product-image">
+            </a>
+            <div class="product-info">
+                <h3>69 T-Shirt</h3>
+                <p class="product-price">UGX 30,000</p>
+                <button class="btn" onclick="addToCart(this)">Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="product-card"
+             data-product-id="1.2"
+             data-product-name="Lace-Up Shoes"
+             data-product-price="200000"
+             data-product-image="men_clothes/lace shoes.png"
+             data-product-category="men"
+             data-product-description="Classic lace-up leather shoes for men|Material:Leather|Sizes:40,41,42|Care:Polish regularly">
+            <a href="product-details.html?id=1.2&name=Lace-Up%20Shoes&image=men_clothes%2Flace%20shoes.png&price=200000&description=Classic%20lace-up%20leather%20shoes%7CMaterial%3ALeather%7CSizes%3A40%2C41%2C42%7CCare%3APolish%20regularly">
+                <img src="men_clothes/lace shoes.png"
+                     alt="Lace-Up Shoes"
+                     class="product-image">
+            </a>
+            <div class="product-info">
+                <h3>LaceShoes</h3>
+                <p class="product-price">UGX 200,000</p>
+                <button class="btn" onclick="addToCart(this)">Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="product-card"
+             data-product-id="1.3"
+             data-product-name="Men's Two-Piece Simple Set"
+             data-product-price="130000"
+             data-product-image="men_clothes/men two simple set.png"
+             data-product-category="men"
+             data-product-description="Comfortable two-piece casual set for men|Material:Cotton blend|Sizes:M,L,XL|Care:Machine wash">
+            <a href="product-details.html?id=1.3&name=Men's%20Two-Piece%20Simple%20Set&image=men_clothes%2Fmen%20two%20simple%20set.png&price=130000&description=Comfortable%20two-piece%20casual%20set%7CMaterial%3ACotton%20blend%7CSizes%3AM%2CL%2CXL%7CCare%3AMachine%20wash">
+                <img src="men_clothes/men two simple set.png"
+                     alt="Men's Two-Piece Simple Set"
+                     class="product-image">
+            </a>
+            <div class="product-info">
+                <h3>Men's Two-Piece Simple Set</h3>
+                <p class="product-price">UGX 130,000</p>
+                <button class="btn" onclick="addToCart(this)">Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="product-card"
+             data-product-id="1.4"
+             data-product-name="Another Men's Two-Piece Set"
+             data-product-price="100000"
+             data-product-image="men_clothes/men two simple set.png"
+             data-product-category="men"
+             data-product-description="Stylish men's casual two-piece set|Material:Linen blend|Sizes:S,M,L|Care:Dry clean only">
+            <a href="product-details.html?id=1.4&name=Another%20Men's%20Two-Piece%20Set&image=men_clothes%2Fmen%20two%20simple%20set.png&price=100000&description=Stylish%20men's%20casual%20two-piece%20set%7CMaterial%3ALinen%20blend%7CSizes%3AS%2CM%2CL%7CCare%3ADry%20clean%20only">
+                <img src="men_clothes/men two simple set.png"
+                     alt="Another Men's Two-Piece Set"
+                     class="product-image">
+            </a>
+            <div class="product-info">
+                <h3>Another Men's Two-Piece Set</h3>
+                <p class="product-price">UGX 100,000</p>
+                <button class="btn" onclick="addToCart(this)">Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="product-card"
+             data-product-id="1.5"
+             data-product-name="Lacoste Polo Krekls T-Shirt"
+             data-product-price="40000"
+             data-product-image="men_clothes/lacoste polo krekls t-shirt.png"
+             data-product-category="men"
+             data-product-description="Classic Lacoste polo t-shirt for men|Material:Cotton|Sizes:S,M,L,XL|Care:Machine wash">
+            <a href="product-details.html?id=1.5&name=Lacoste%20Polo%20Krekls%20T-Shirt&image=men_clothes%2Flacoste%20polo%20krekls%20t-shirt.png&price=40000&description=Classic%20Lacoste%20polo%20t-shirt%7CMaterial%3ACotton%7CSizes%3AS%2CM%2CL%2CXL%7CCare%3AMachine%20wash">
+                <img src="men_clothes/lacoste polo krekls t-shirt.png"
+                     alt="Lacoste Polo Krekls T-Shirt"
+                     class="product-image">
+            </a>
+            <div class="product-info">
+                <h3>Lacoste Polo Krekls</h3>
+                <p class="product-price">UGX 40,000</p>
+                <button class="btn" onclick="addToCart(this)">Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="product-card"
+             data-product-id="1.6"
+             data-product-name="Two-Piece Casual Wear"
+             data-product-price="180000"
+             data-product-image="men_clothes/2 set casual wear.png"
+             data-product-category="men"
+             data-product-description="Stylish two-piece casual wear for men|Material:Rayon blend|Sizes:M,L|Care:Hand wash">
+            <a href="product-details.html?id=1.6&name=Two-Piece%20Casual%20Wear&image=men_clothes%2F2%20set%20casual%20wear.png&price=180000&description=Stylish%20two-piece%20casual%20wear%7CMaterial%3ARayon%20blend%7CSizes%3AM%2CL%7CCare%3AHand%20wash">
+                <img src="men_clothes/2 set casual wear.png"
+                     alt="Two-Piece Casual Wear"
+                     class="product-image">
+            </a>
+            <div class="product-info">
+                <h3>Two-Piece Casual Wear</h3>
+                <p class="product-price">UGX 180,000</p>
+                <button class="btn" onclick="addToCart(this)">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+
+    <footer style="background: #2d3436; color: white; padding: 2rem; margin-top: 3rem;">
+        <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+            <div>
+                <h3 style="color: #e91e63; margin-bottom: 1rem;">About Fashion Hub</h3>
+                <p style="font-size: 0.9rem; line-height: 1.6;">
+                    We're Uganda's premier online fashion destination, connecting local designers with fashion-conscious
+                    customers. Our mission is to make African fashion accessible to everyone while supporting local artisans.
+                </p>
+            </div>
+            <div>
+                <h3 style="color: #e91e63; margin-bottom: 1rem;">Quick Links</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 0.5rem;">
+                        <a href="/shipping" style="color: white; text-decoration: none;">Shipping Policy</a>
+                    </li>
+                    <li style="margin-bottom: 0.5rem;">
+                        <a href="/returns" style="color: white; text-decoration: none;">Return & Exchange</a>
+                    </li>
+                    <li style="margin-bottom: 0.5rem;">
+                        <a href="/faq" style="color: white; text-decoration: none;">FAQ</a>
+                    </li>
+                    <li style="margin-bottom: 0.5rem;">
+                        <a href="/size-guide" style="color: white; text-decoration: none;">Size Guide</a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h3 style="color: #e91e63; margin-bottom: 1rem;">Contact Us</h3>
+                <div style="margin-bottom: 0.5rem;">📧 Email: <a href="mailto:info@fashionhub.ug" style="color: white; text-decoration: none;">info@fashionhub.ug</a></div>
+                <div style="margin-bottom: 0.5rem;">📞 Phone: <a href="tel:+256700123456" style="color: white; text-decoration: none;">+256 700 123 456</a></div>
+                <div>📍 Address: Plot 42, Kampala Road, Kampala, Uganda</div>
+            </div>
+            <div>
+                <h3 style="color: #e91e63; margin-bottom: 1rem;">Follow Us</h3>
+                <div style="display: flex; gap: 1rem;">
+                    <a href="#" style="color: white; font-size: 1.5rem;"><i class="fab fa-facebook"></i></a>
+                    <a href="#" style="color: white; font-size: 1.5rem;"><i class="fab fa-instagram"></i></a>
+                    <a href="#" style="color: white; font-size: 1.5rem;"><i class="fab fa-twitter"></i></a>
+                    <a href="#" style="color: white; font-size: 1.5rem;"><i class="fab fa-whatsapp"></i></a>
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <h4 style="margin-bottom: 0.5rem;">Newsletter</h4>
+                    <input type="email" placeholder="Enter your email" style="padding: 0.5rem; border-radius: 4px; border: none; margin-right: 0.5rem;">
+                    <button style="padding: 0.5rem 1rem; background: #e91e63; border: none; color: white; border-radius: 4px; margin-top: 0.5rem;">Subscribe</button>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 2rem; border-top: 1px solid #444; padding-top: 1rem;">
+            © 2023 Fashion Hub Uganda. All rights reserved.
+        </div>
+        <div class="whatsapp-support">
+            <a href="https://wa.me/256703718511" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-whatsapp"></i>
+                <span class="tooltip">Chat with Support</span>
+            </a>
+        </div>
+    </footer>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <script>
+        // ========== INITIALIZE CART COUNTER ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            document.querySelectorAll('.cart-counter').forEach(el => {
+                el.textContent = cart.length;
+            });
+        });
+
+        // ========== ADD TO CART FUNCTION ==========
+        function addToCart(event) {
+            event.stopPropagation();
+            const card = event.target.closest('.product-card');
+
+            const product = {
+                name: card.dataset.productName,
+                price: `UGX ${parseInt(card.dataset.productPrice).toLocaleString()}`,
+                image: card.dataset.productImage,
+                rawPrice: card.dataset.productPrice,
+                category: card.dataset.productCategory
+            };
+
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.push(product);
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            // Update cart counter
+            document.querySelectorAll('.cart-counter').forEach(el => {
+                el.textContent = cart.length;
+            });
+
+            alert(`Added to cart: ${product.name}`);
+        }
+
+        // ========== SEARCH FUNCTIONALITY ==========
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            document.querySelectorAll('.product-card').forEach(card => {
+                const productName = card.dataset.productName.toLowerCase();
+                card.style.display = productName.includes(searchTerm) ? 'block' : 'none';
+            });
+        });
+
+        function filterProducts(category) {
+            document.querySelectorAll('.product-card').forEach(card => {
+                const shouldShow = category === 'all' || card.dataset.productCategory === category;
+                card.style.display = shouldShow ? 'block' : 'none';
+            });
+
+            // Optional: Add active state to buttons
+            document.querySelectorAll('.nav-buttons button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            const activeButton = Array.from(document.querySelectorAll('.nav-buttons button')).find(btn => btn.textContent.toLowerCase() === category);
+            if (activeButton) {
+                activeButton.classList.add('active');
+            } else if (category === 'all') {
+                Array.from(document.querySelectorAll('.nav-buttons button'))[0].classList.add('active'); // Assuming 'All Products' is the first button
+            }
+        }
+        // Cart Management System
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            document.querySelectorAll('.cart-counter').forEach(el => {
+                el.textContent = cart.length;
+            });
+        }
+
+        function showAddToCartConfirmation(productName) {
+            const confirmation = document.createElement('div');
+            confirmation.className = 'cart-confirmation';
+            confirmation.innerHTML = `
+                ✅ ${productName} added to cart!
+                <div class="confirmation-progress"></div>
+            `;
+
+            document.body.appendChild(confirmation);
+
+            setTimeout(() => {
+                confirmation.remove();
+            }, 3000);
+        }
+
+        // Initialize cart count on page load
+        document.addEventListener('DOMContentLoaded', updateCartCount);
+
+        // Add confirmation animation styles
+        const style = document.createElement('style');
+        style.innerHTML = `
+            .cart-confirmation {
+                position: fixed;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(0, 0, 0, 0.9);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 30px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                animation: slideUp 0.5s ease-out;
+                z-index: 1000;
+            }
+
+            .confirmation-progress {
+                width: 100%;
+                height: 3px;
+                background: rgba(255,255,255,0.3);
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                animation: progress 3s linear;
+            }
+
+            @keyframes slideUp {
+                from { bottom: -50px; opacity: 0; }
+                to { bottom: 20px; opacity: 1; }
+            }
+
+            @keyframes progress {
+                from { width: 100%; }
+                to { width: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+    <script>
+        function toggleDealerPanel() {
+            const panel = document.getElementById('dealerPanel');
+            panel.classList.toggle('active');
+
+            // Close panel when clicking outside
+            if(panel.classList.contains('active')) {
+                panel.addEventListener('click', function(e) {
+                    if(e.target === panel) toggleDealerPanel();
+                });
+            }
+
+            // Close with ESC key
+            document.addEventListener('keydown', function(e) {
+                if(e.key === 'Escape' && panel.classList.contains('active')) {
+                    toggleDealerPanel();
+                }
+            });
+        }
+    </script>
+</body>
+</html>

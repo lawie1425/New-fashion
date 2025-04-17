@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dealer Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #e91e63;
+            --secondary-color: #2d3436;
+            --accent-color: #ff4081;
+            --text-light: #666;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+            font-family: 'Segoe UI', sans-serif;
+            background: #f8f9fa;
+        }
+
+        .sidebar {
+            background: var(--secondary-color);
+            color: white;
+            padding: 2rem;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+
+        .main-content {
+            padding: 2rem;
+            background: white;
+        }
+
+        .product-form {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(233,30,99,0.1);
+        }
+
+        .image-preview {
+            width: 200px;
+            height: 200px;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            margin: 1rem 0;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .product-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 1rem;
+        }
+
+        .product-info h3 {
+            margin: 0 0 0.5rem;
+            color: var(--secondary-color);
+        }
+
+        .product-info p {
+            margin: 0.5rem 0;
+            color: var(--text-light);
+        }
+
+        .stock-indicator {
+            font-weight: bold;
+        }
+
+        .stock-low {
+            color: #d32f2f;
+        }
+
+        .stock-medium {
+            color: #ffa000;
+        }
+
+        .stock-high {
+            color: #4caf50;
+        }
+
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0.5rem 0.25rem 0 0;
+            color: white;
+            transition: background 0.3s ease;
+        }
+
+        .sell-btn {
+            background: #4caf50;
+        }
+
+        .sell-btn:hover {
+            background: #388e3c;
+        }
+
+        .restock-btn {
+            background: #2196f3;
+        }
+
+        .restock-btn:hover {
+            background: #1976d2;
+        }
+
+        .feedback-btn {
+            background: #f57c00;
+        }
+
+        .feedback-btn:hover {
+            background: #e65100;
+        }
+
+        .nav-list {
+            list-style: none;
+            padding: 0;
+            margin: 2rem 0;
+        }
+
+        .nav-item {
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .nav-item.active {
+            background: var(--primary-color);
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .analytics-section {
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .feedback-section {
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .feedback-list {
+            margin-top: 1rem;
+        }
+
+        .feedback-item {
+            border-bottom: 1px solid #eee;
+            padding: 1rem 0;
+        }
+
+        .feedback-item:last-child {
+            border-bottom: none;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .settings-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <h2>Dealer Dashboard</h2>
+            <nav>
+                <ul class="nav-list">
+                    <li class="nav-item active" data-section="add-product">Add New Product</li>
+                    <li class="nav-item" data-section="inventory">Inventory</li>
+                    <li class="nav-item" data-section="feedback">Feedback</li>
+                    <li class="nav-item" data-section="analytics">Sales Analytics</li>
+                    <li class="nav-item" data-section="settings">Account Settings</li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="main-content">
+            <!-- Add Product Section -->
+            <div id="add-product" class="content-section active">
+                <h2>Add New Product</h2>
+                <p>Fill in the details to add a product to your inventory.</p>
+                <form id="productForm" class="product-form">
+                    <div class="form-group">
+                        <label class="form-label">Product Name</label>
+                        <input type="text" class="form-control" id="productName" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Product Description</label>
+                        <textarea class="form-control" id="productDescription" rows="4" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Price (UGX)</label>
+                        <input type="number" class="form-control" id="productPrice" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Stock Quantity</label>
+                        <input type="number" class="form-control" id="productStock" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Product Images</label>
+                        <input type="file" class="form-control" id="productImages" accept="image/*">
+                        <div class="image-preview" id="imagePreview"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Product Category</label>
+                        <select class="form-control" id="productCategory">
+                            <option value="men">Men's Fashion</option>
+                            <option value="women">Women's Fashion</option>
+                            <option value="kids">Kids' Fashion</option>
+                            <option value="accessories">Accessories</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Product Tags</label>
+                        <input type="text" class="form-control" id="productTags">
+                    </div>
+                    <button type="submit" class="btn-primary">Publish Product</button>
+                </form>
+            </div>
+
+            <!-- Inventory Section -->
+            <div id="inventory" class="content-section">
+                <h2>Inventory</h2>
+                <p>Monitor your product stock levels. Use "Sell 1" to simulate a sale, "Restock 5" to add stock, or "View Feedback" to see comments.</p>
+                <div class="product-list" id="inventoryProducts"></div>
+            </div>
+
+            <!-- Feedback Section -->
+            <div id="feedback" class="content-section feedback-section">
+                <h2>Feedback</h2>
+                <p>View all customer and admin feedback for your products.</p>
+                <div class="feedback-list" id="allFeedback"></div>
+            </div>
+
+            <!-- Analytics Section -->
+            <div id="analytics" class="content-section analytics-section">
+                <h2>Sales Analytics</h2>
+                <div class="analytics-content">
+                    <canvas id="salesChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+            <div id="settings" class="content-section">
+                <div class="settings-form">
+                    <h2>Account Settings</h2>
+                    <div class="form-group">
+                        <label class="form-label">Business Name</label>
+                        <input type="text" class="form-control" id="businessName">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="businessEmail">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Change Password</label>
+                        <input type="password" class="form-control" id="newPassword">
+                    </div>
+                    <button class="btn-primary" onclick="saveSettings()">Save Changes</button>
+                </div>
+            </div>
+
+            <!-- Feedback Modal -->
+            <div id="feedbackModal" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <span class="modal-close" onclick="closeFeedbackModal()">×</span>
+                    <h3>Feedback for <span id="feedbackProductName"></span></h3>
+                    <div class="feedback-section">
+                        <h4>Customer Feedback</h4>
+                        <div id="customerFeedback"></div>
+                    </div>
+                    <div class="feedback-section">
+                        <h4>Admin Feedback</h4>
+                        <div id="adminFeedback"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Tagify Initialization
+        const tagInput = document.getElementById('productTags');
+        new Tagify(tagInput, {
+            whitelist: ['fashion', 'trendy', 'casual', 'formal', 'sale'],
+            maxTags: 5,
+            dropdown: { enabled: 0 }
+        });
+
+        // Image Preview
+        document.getElementById('productImages').addEventListener('change', function(e) {
+            const preview = document.getElementById('imagePreview');
+            if (e.target.files[0]) {
+                preview.style.backgroundImage = `url(${URL.createObjectURL(e.target.files[0])})`;
+            } else {
+                preview.style.backgroundImage = '';
+            }
+        });
+
+        // Inventory Management
+        function loadInventory() {
+            let products = JSON.parse(localStorage.getItem('products') || '[]');
+            // Add sample products if none exist
+            if (products.length === 0) {
+                products = [
+                    {
+                        name: "African Print Dress",
+                        description: "A vibrant women's dress",
+                        price: "180000",
+                        stock: 50,
+                        image: "https://images.unsplash.com/photo-1581044777550-4cfa60707c03?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80",
+                        category: "women",
+                        tags: ["fashion", "trendy"],
+                        feedback: {
+                            customer: [
+                                { user: "Sarah K.", comment: "Love the fit and colors!", rating: 5 },
+                                { user: "Mike L.", comment: "Slightly tight.", rating: 3 }
+                            ],
+                            admin: [
+                                { admin: "Admin", comment: "Popular item, restock recommended." },
+                                { admin: "Admin", comment: "Check stitching quality." }
+                            ]
+                        }
+                    },
+                    {
+                        name: "Men's Casual Shirt",
+                        description: "Comfortable cotton shirt",
+                        price: "120000",
+                        stock: 20,
+                        image: "https://images.unsplash.com/photo-1598032895397-b947244972c2?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80",
+                        category: "men",
+                        tags: ["casual", "fashion"],
+                        feedback: {
+                            customer: [
+                                { user: "Peter M.", comment: "Great for daily wear!", rating: 4 }
+                            ],
+                            admin: [
+                                { admin: "Admin", comment: "Add more color options." }
+                            ]
+                        }
+                    }
+                ];
+                localStorage.setItem('products', JSON.stringify(products));
+            }
+
+            const container = document.getElementById('inventoryProducts');
+            container.innerHTML = '';
+
+            products.forEach((product, index) => {
+                const stockClass = product.stock <= 10 ? 'stock-low' : product.stock <= 50 ? 'stock-medium' : 'stock-high';
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <img src="${product.image || 'https://via.placeholder.com/300'}" class="product-image" alt="${product.name}">
+                    <div class="product-info">
+                        <h3>${product.name}</h3>
+                        <p>Price: UGX ${parseInt(product.price).toLocaleString()}</p>
+                        <p>Category: ${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</p>
+                        <p class="stock-indicator ${stockClass}">Stock: ${product.stock} ${product.stock <= 10 ? '(Low)' : ''}</p>
+                        <button class="action-btn sell-btn" onclick="simulateSale(${index}, 1)">Sell 1</button>
+                        <button class="action-btn restock-btn" onclick="restockProduct(${index}, 5)">Restock 5</button>
+                        <button class="action-btn feedback-btn" onclick="showFeedback(${index})">View Feedback</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Form Submission
+        document.getElementById('productForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const products = JSON.parse(localStorage.getItem('products') || '[]');
+            const imageFile = document.getElementById('productImages').files[0];
+            const product = {
+                name: document.getElementById('productName').value,
+                description: document.getElementById('productDescription').value,
+                price: document.getElementById('productPrice').value,
+                stock: parseInt(document.getElementById('productStock').value),
+                image: imageFile ? URL.createObjectURL(imageFile) : 'https://via.placeholder.com/300',
+                category: document.getElementById('productCategory').value,
+                tags: JSON.parse(document.getElementById('productTags').value || '[]').map(t => t.value),
+                feedback: {
+                    customer: [],
+                    admin: []
+                }
+            };
+            products.push(product);
+            localStorage.setItem('products', JSON.stringify(products));
+            alert('Product published successfully!');
+            this.reset();
+            document.getElementById('imagePreview').style.backgroundImage = '';
+            tagInput.value = '';
+            loadInventory();
+        });
+
+        // Simulate Sale
+        function simulateSale(productIndex, quantity) {
+            const products = JSON.parse(localStorage.getItem('products') || '[]');
+            if (products[productIndex] && products[productIndex].stock >= quantity) {
+                products[productIndex].stock -= quantity;
+                localStorage.setItem('products', JSON.stringify(products));
+                loadInventory();
+                alert(`Sold ${quantity} unit(s) of ${products[productIndex].name}`);
+            } else {
+                alert('Not enough stock to sell!');
+            }
+        }
+
+        // Restock Product
+        function restockProduct(productIndex, quantity) {
+            const products = JSON.parse(localStorage.getItem('products') || '[]');
+            if (products[productIndex]) {
+                products[productIndex].stock += quantity;
+                localStorage.setItem('products', JSON.stringify(products));
+                loadInventory();
+                alert(`Restocked ${quantity} unit(s) of ${products[productIndex].name}`);
+            }
+        }
+
+        // Feedback Modal
+        function showFeedback(productIndex) {
+            const products = JSON.parse(localStorage.getItem('products') || '[]');
+            const product = products[productIndex];
+            if (!product) return;
+
+            const modal = document.getElementById('feedbackModal');
+            const productName = document.getElementById('feedbackProductName');
+            const customerFeedback = document.getElementById('customerFeedback');
+            const adminFeedback = document.getElementById('adminFeedback');
+
+            productName.textContent = product.name;
+
+            customerFeedback.innerHTML = product.feedback.customer.length
+                ? product.feedback.customer.map(f => `
+                    <div class="feedback-item">
+                        <strong>${f.user}</strong>: ${f.comment} <br>
+                        Rating: ${'★'.repeat(f.rating)}${'☆'.repeat(5 - f.rating)}
+                    </div>
+                `).join('')
+                : '<p>No customer feedback yet.</p>';
+
+            adminFeedback.innerHTML = product.feedback.admin.length
+                ? product.feedback.admin.map(f => `
+                    <div class="feedback-item">
+                        <strong>${f.admin}</strong>: ${f.comment}
+                    </div>
+                `).join('')
+                : '<p>No admin feedback yet.</p>';
+
+            modal.style.display = 'block';
+        }
+
+        function closeFeedbackModal() {
+            document.getElementById('feedbackModal').style.display = 'none';
+        }
+
+        // All Feedback Section
+        function loadAllFeedback() {
+            const products = JSON.parse(localStorage.getItem('products') || '[]');
+            const container = document.getElementById('allFeedback');
+            container.innerHTML = '';
+
+            products.forEach(product => {
+                const feedbackDiv = document.createElement('div');
+                feedbackDiv.innerHTML = `
+                    <h3>${product.name}</h3>
+                    <div class="feedback-section">
+                        <h4>Customer Feedback</h4>
+                        ${product.feedback.customer.length
+                            ? product.feedback.customer.map(f => `
+                                <div class="feedback-item">
+                                    <strong>${f.user}</strong>: ${f.comment} <br>
+                                    Rating: ${'★'.repeat(f.rating)}${'☆'.repeat(5 - f.rating)}
+                                </div>
+                            `).join('')
+                            : '<p>No customer feedback yet.</p>'}
+                    </div>
+                    <div class="feedback-section">
+                        <h4>Admin Feedback</h4>
+                        ${product.feedback.admin.length
+                            ? product.feedback.admin.map(f => `
+                                <div class="feedback-item">
+                                    <strong>${f.admin}</strong>: ${f.comment}
+                                </div>
+                            `).join('')
+                            : '<p>No admin feedback yet.</p>'}
+                    </div>
+                `;
+                container.appendChild(feedbackDiv);
+            });
+
+            if (products.length === 0) {
+                container.innerHTML = '<p>No products or feedback available.</p>';
+            }
+        }
+
+        // Navigation
+        function initNavigation() {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                    this.classList.add('active');
+                    const sectionId = this.dataset.section;
+                    document.querySelectorAll('.content-section').forEach(sec => {
+                        sec.classList.remove('active');
+                    });
+                    document.getElementById(sectionId).classList.add('active');
+
+                    switch (sectionId) {
+                        case 'analytics':
+                            initChart();
+                            break;
+                        case 'inventory':
+                            loadInventory();
+                            break;
+                        case 'feedback':
+                            loadAllFeedback();
+                            break;
+                    }
+                });
+            });
+        }
+
+        // Sales Chart
+        let salesChart = null;
+
+        function initChart() {
+            if (salesChart) salesChart.destroy();
+            const ctx = document.getElementById('salesChart').getContext('2d');
+            salesChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Monthly Sales (UGX)',
+                        data: [650000, 590000, 800000, 810000, 560000, 750000],
+                        borderColor: '#e91e63',
+                        tension: 0.1,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Sales Performance'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return 'UGX ' + value.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Settings
+        function saveSettings() {
+            const settings = {
+                businessName: document.getElementById('businessName').value,
+                email: document.getElementById('businessEmail').value
+            };
+            localStorage.setItem('dealerSettings', JSON.stringify(settings));
+            alert('Settings saved successfully!');
+        }
+
+        // Initialize Dashboard
+        function initDashboard() {
+            initNavigation();
+            loadInventory();
+            const savedSettings = JSON.parse(localStorage.getItem('dealerSettings') || '{}');
+            document.getElementById('businessName').value = savedSettings.businessName || '';
+            document.getElementById('businessEmail').value = savedSettings.email || '';
+        }
+
+        window.onload = initDashboard;
+    </script>
+</body>
+</html>

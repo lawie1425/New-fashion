@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail - Fashion Hub UG</title>
+    <style>
+        :root {
+            --primary-color: #e91e63;
+            --secondary-color: #2d3436;
+            --accent-color: #ff4081;
+            --text-light: #666;
+            --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        body {
+            font-family: 'Helvetica Neue', sans-serif;
+            margin: 0;
+            color: var(--secondary-color);
+            line-height: 1.6;
+        }
+
+        /* Enhanced Navigation */
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--secondary-color);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            color: white;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-buttons a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-buttons a:hover {
+            color: var(--primary-color);
+        }
+
+        .cart-counter {
+            background: var(--primary-color);
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin-left: 6px;
+            font-size: 0.9rem;
+        }
+
+        /* Product Detail Section */
+        .product-detail {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .product-image-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 600px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .product-image:hover {
+            transform: scale(1.03);
+        }
+
+        .product-info {
+            padding: 2rem;
+        }
+
+        .product-title {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+
+        .product-price {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+
+        .product-description {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        /* Size Selector */
+        .size-selector {
+            margin: 2rem 0;
+        }
+
+        .size-selector h3 {
+            margin-bottom: 1rem;
+        }
+
+        .size-options {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .size-btn {
+            padding: 0.8rem 1.5rem;
+            border: 2px solid #ddd;
+            background: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .size-btn.selected {
+            border-color: var(--primary-color);
+            background: rgba(233,30,99,0.1);
+            color: var(--primary-color);
+        }
+
+        /* Quantity Selector */
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .quantity-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #ddd;
+            background: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .quantity-btn:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        #quantity {
+            font-size: 1.4rem;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        /* Add to Cart Button */
+        .add-to-cart-btn {
+            background: var(--primary-color);
+            color: white;
+            padding: 1.2rem 2.5rem;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            font-weight: 600;
+        }
+
+        .add-to-cart-btn:hover {
+            background: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(233,30,99,0.3);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--secondary-color);
+            color: white;
+            padding: 4rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer h3 {
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer a:hover {
+            color: var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            .product-detail {
+                grid-template-columns: 1fr;
+                padding: 0 1rem;
+            }
+
+            .product-image {
+                height: 400px;
+            }
+
+            .product-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <div class="logo">Fashion Hub UG</div>
+        <div class="nav-buttons">
+            <a href="index.html">Continue Shopping</a>
+            <a href="cart.html">🛒 Cart <span class="cart-counter">0</span></a>
+        </div>
+    </nav>
+
+    <div class="product-detail">
+        <div class="product-image-container">
+            <img id="productImage" src="" alt="Product Image" class="product-image">
+        </div>
+
+        <div class="product-info">
+            <h1 class="product-title" id="productTitle"></h1>
+            <p class="product-price" id="productPrice"></p>
+            <div class="product-description" id="productDescription"></div>
+
+            <div class="size-selector">
+                <h3>Select Size:</h3>
+                <div class="size-options">
+                    <button class="size-btn" onclick="selectSize('S')">S</button>
+                    <button class="size-btn" onclick="selectSize('M')">M</button>
+                    <button class="size-btn" onclick="selectSize('L')">L</button>
+                </div>
+            </div>
+
+            <div class="quantity-selector">
+                <h3>Quantity:</h3>
+                <button class="quantity-btn" onclick="changeQuantity(-1)">-</button>
+                <span id="quantity">1</span>
+                <button class="quantity-btn" onclick="changeQuantity(1)">+</button>
+            </div>
+
+            <button class="add-to-cart-btn" onclick="addToCart()">Add to Cart</button>
+
+            <div class="product-details">
+                <h3>Product Details</h3>
+                <ul id="productFeatures">
+                    </ul>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div>
+                <h3>About Us</h3>
+                <p>Uganda's premier fashion destination offering curated collections from local designers and international brands.</p>
+            </div>
+            <div>
+                <h3>Quick Links</h3>
+                <p><a href="index.html">New Arrivals</a></p>
+                <p><a href="cart.html">View Cart</a></p>
+                <p><a href="#">Size Guide</a></p>
+            </div>
+            <div>
+                <h3>Contact</h3>
+                <p>📞 +256 712 345 678</p>
+                <p>📧 support@fashionhub.ug</p>
+                <p>📍 Kampala, Uganda</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let selectedSize = 'M';
+        let quantity = 1;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+
+            // Set product details
+            document.getElementById('productTitle').textContent = decodeURIComponent(urlParams.get('name'));
+            document.getElementById('productPrice').textContent = `UGX ${parseInt(urlParams.get('price')).toLocaleString()}`;
+            document.getElementById('productImage').src = decodeURIComponent(urlParams.get('image'));
+
+            // Set detailed description
+            const description = decodeURIComponent(urlParams.get('description')).split('|');
+            document.getElementById('productDescription').innerHTML = `
+                <p>${description[0]}</p>
+                <h4>Features:</h4>
+                <ul>
+                    ${description.slice(1).map(feature => `<li>${feature}</li>`).join('')}
+                </ul>
+            `;
+
+            // Initialize size selection
+            document.querySelectorAll('.size-btn').forEach(btn => {
+                if(btn.textContent === selectedSize) {
+                    btn.classList.add('selected');
+                }
+            });
+
+            // Update cart counter
+            updateCartCounter();
+        });
+
+        function selectSize(size) {
+            selectedSize = size;
+            document.querySelectorAll('.size-btn').forEach(btn => {
+                btn.classList.remove('selected');
+                if(btn.textContent === size) {
+                    btn.classList.add('selected');
+                }
+            });
+        }
+
+        function changeQuantity(delta) {
+            quantity = Math.max(1, quantity + delta);
+            document.getElementById('quantity').textContent = quantity;
+        }
+
+        function addToCart() {
+            const product = {
+                id: new URLSearchParams(window.location.search).get('id'),
+                name: document.getElementById('productTitle').textContent,
+                price: document.getElementById('productPrice').textContent,
+                image: document.getElementById('productImage').src,
+                rawPrice: parseInt(document.getElementById('productPrice').textContent.replace(/[^0-9]/g, '')),
+                size: selectedSize,
+                quantity: quantity
+            };
+
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.push(product);
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            updateCartCounter();
+            showConfirmation(`${product.quantity}x ${product.name} (${product.size}) added to cart!`);
+        }
+
+        function updateCartCounter() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            document.querySelectorAll('.cart-counter').forEach(el => {
+                el.textContent = cart.length;
+            });
+        }
+
+        function showConfirmation(message) {
+            const confirmation = document.createElement('div');
+            confirmation.className = 'confirmation-message';
+            confirmation.innerHTML = `
+                <span>✅ ${message}</span>
+                <div class="progress-bar"></div>
+            `;
+
+            document.body.appendChild(confirmation);
+
+            setTimeout(() => {
+                confirmation.remove();
+            }, 3000);
+        }
+
+        // Add confirmation message styles
+        const style = document.createElement('style');
+        style.innerHTML = `
+            .confirmation-message {
+                position: fixed;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(0, 0, 0, 0.9);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 30px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                animation: slideUp 0.5s ease-out;
+                z-index: 1000;
+            }
+
+            .progress-bar {
+                width: 100%;
+                height: 3px;
+                background: rgba(255,255,255,0.3);
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                animation: progress 3s linear;
+            }
+
+            @keyframes slideUp {
+                from { bottom: -50px; opacity: 0; }
+                to { bottom: 20px; opacity: 1; }
+            }
+
+            @keyframes progress {
+                from { width: 100%; }
+                to { width: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

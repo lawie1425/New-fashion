@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fashion Hub - Dealer Portal</title>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-firestore.js"></script>
+    <style>
+        /* Previous styles plus these additions */
+        
+        :root {
+            --primary: #e91e63;
+            --secondary: #2d3436;
+            --light: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Collaboration Section */
+        .collab-section {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+                        url('https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .collab-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .collab-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Updated Auth Container */
+        .auth-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 80vh;
+        }
+
+        .auth-forms {
+            padding: 2rem;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .auth-image {
+            background: linear-gradient(rgba(198, 225, 227, 0.8), rgba(196, 72, 196, 0.8)),
+                        url('https://images.unsplash.com/photo-1529338296731-c4280a44fc48?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        /* Form Styling */
+        .form-toggle {
+            text-align: center;
+            margin: 1rem 0;
+        }
+
+        .form-toggle span {
+            color: var(--primary);
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Rest of your existing styles... */
+    
+        .auth-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 80vh;
+            margin: 2rem 0;
+        }
+
+        .form-step {
+            display: none;
+            padding: 2rem;
+        }
+
+        .form-step.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        footer {
+            background: #2d3436;
+            color: white;
+            padding: 2rem;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    
+    .whatsapp-support {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        
+    }
+
+    .whatsapp-support a {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        background: #25D366;
+        color: white;
+        padding: 15px;
+        border-radius: 50px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+    }
+
+    .whatsapp-support a:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+        background: #128C7E;
+    }
+
+    .whatsapp-support i {
+        font-size: 32px;
+        margin-right: 10px;
+    }
+
+    .tooltip {
+        display: none;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        margin-right: 8px;
+    }
+
+    .whatsapp-support:hover .tooltip {
+        display: inline-block;
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    /* Add this to your existing Font Awesome link in head */
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <div class="logo">Fashion Hub UG</div>
+        <div id="navButtons">
+            <button onclick="window.location.href='index.html'">Home</button>
+            <button onclick="showAuth(true)">Dealer Login</button>
+        </div>
+    </nav>
+      <!-- Collaboration Section -->
+      <div class="collab-section">
+        <div class="collab-content">
+            <h2>Join Uganda's Fashion Revolution</h2>
+            <p>Collaborate with designers, reach new customers, and grow your business</p>
+        </div>
+    </div>
+
+    <div class="auth-container" id="authSection">
+        <!-- Left Side: Forms -->
+        <div class="auth-forms">
+            <!-- Login Form -->
+            <div id="loginForm" class="form-step active">
+                <h2>Dealer Login</h2>
+                <input type="email" id="loginEmail" placeholder="Email">
+                <input type="password" id="loginPassword" placeholder="Password">
+                <button onclick="handleLogin()">Login</button>
+                <p class="form-toggle">New dealer? <span onclick="showForm('register')">Create account</span></p>
+            </div>
+
+            <!-- Registration Form -->
+            <div id="registerForm" class="form-step">
+                <h2>Dealer Registration</h2>
+                <input type="text" id="businessName" placeholder="Business Name">
+                <input type="email" id="businessEmail" placeholder="Business Email">
+                <input type="tel" id="businessPhone" placeholder="Phone Number">
+                <button onclick="showForm('subscription')">Continue</button>
+                <p class="form-toggle">Already have an account? <span onclick="showForm('login')">Login here</span></p>
+            </div>
+
+            <!-- Subscription Form -->
+            <div id="subscriptionForm" class="form-step">
+                <h2>Choose Plan</h2>
+                <select id="subscriptionPlan">
+                    <option value="monthly">Monthly ($50)</option>
+                    <option value="yearly">Yearly ($500)</option>
+                </select>
+                <button onclick="showForm('payment')">Continue</button>
+            </div>
+
+            <!-- Payment Form -->
+            <div id="paymentForm" class="form-step">
+                <h2>Payment Details</h2>
+                <input type="text" id="cardNumber" placeholder="Card Number">
+                <input type="month" id="expiryDate" placeholder="MM/YY">
+                <input type="text" id="cvc" placeholder="CVC">
+                <button onclick="handleRegistration()">Complete Registration</button>
+            </div>
+
+            <div id="statusMessage" class="status-message"></div>
+        </div>
+
+        <!-- Right Side: Image -->
+        <div class="auth-image">
+            <div>
+                <h3>Why Join Fashion Hub?</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li>✓ Reach thousands of customers</li>
+                    <li>✓ Manage your inventory easily</li>
+                    <li>✓ Get sales analytics</li>
+                    <li>✓ 24/7 support</li>
+                </ul>
+            </div>
+        </div>
+    </div>    
+
+    <footer>
+        <div class="footer-content">
+            <div>
+                <h4>Fashion Hub UG</h4>
+                <p>Connecting Designers with Customers</p>
+            </div>
+            <div>
+                <h4>Contact</h4>
+                <p>Email: dealers@fashionhub.ug</p>
+                <p>Phone: +256 700 123 456</p>
+            </div>
+            <div>
+                <h4>Legal</h4>
+                <p>Privacy Policy</p>
+                <p>Terms of Service</p>
+            </div>
+        </div>
+        <!-- Add this to your HTML (preferably near the footer) -->
+<div class="whatsapp-support">
+    <a href="https://wa.me/256703718511" target="_blank" rel="noopener noreferrer">
+        <i class="fab fa-whatsapp"></i>
+        <span class="tooltip">Chat with Support</span>
+    </a>
+</div>
+    </footer>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_BUCKET.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Form Navigation
+        function showForm(formId) {
+            document.querySelectorAll('.form-step').forEach(form => {
+                form.classList.remove('active');
+            });
+            document.getElementById(formId + 'Form').classList.add('active');
+        }
+
+        // Handle Registration
+        async function handleRegistration() {
+            const businessName = document.getElementById('businessName').value;
+            const email = document.getElementById('businessEmail').value;
+            const password = "auto-generated-password"; // You should collect password
+            const phone = document.getElementById('businessPhone').value;
+            const plan = document.getElementById('subscriptionPlan').value;
+
+            try {
+                // Create user
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                
+                // Save dealer data
+                await db.collection('dealers').doc(userCredential.user.uid).set({
+                    businessName,
+                    email,
+                    phone,
+                    subscription: {
+                        plan,
+                        status: 'pending',
+                        startDate: new Date(),
+                        endDate: calculateEndDate(plan)
+                    },
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                showSuccessMessage("Registration successful! Redirecting to dashboard...");
+                setTimeout(() => window.location.href = 'dealer-dashboard.html', 2000);
+            } catch (error) {
+                showErrorMessage(error.message);
+            }
+        }
+
+        // Handle Login
+        async function handleLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                window.location.href = 'dealer-dashboard.html';
+            } catch (error) {
+                showErrorMessage("Invalid email or password");
+            }
+        }
+
+        // Helper Functions
+        function calculateEndDate(plan) {
+            const date = new Date();
+            plan === 'yearly' ? date.setFullYear(date.getFullYear() + 1) : date.setMonth(date.getMonth() + 1);
+            return date;
+        }
+
+        function showSuccessMessage(message) {
+            const statusDiv = document.getElementById('statusMessage');
+            statusDiv.textContent = message;
+            statusDiv.classList.add('success');
+            statusDiv.style.display = 'block';
+        }
+
+        function showErrorMessage(message) {
+            const statusDiv = document.getElementById('statusMessage');
+            statusDiv.textContent = message;
+            statusDiv.classList.add('error');
+            statusDiv.style.display = 'block';
+        }
+        
+    </script>
+</body>
+</html>

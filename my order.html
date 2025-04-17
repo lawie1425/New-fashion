@@ -1,0 +1,536 @@
+
+  
+  <!-- 2. Create a new file called orders.html with this content: -->
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>My Orders - Fashion Hub Uganda</title>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+      <style>
+          :root {
+              --primary-color: #e91e63;
+              --secondary-color: #2d3436;
+          }
+          
+          body {
+              font-family: 'Helvetica Neue', sans-serif;
+              margin: 0;
+              background: #f8f9fa;
+              padding-top: 80px;
+          }
+          
+          .container {
+              max-width: 1200px;
+              margin: 0 auto;
+              padding: 20px;
+          }
+          
+          /* Order History Styles */
+          .order-tabs {
+              display: flex;
+              gap: 10px;
+              margin: 1rem 0 2rem;
+              border-bottom: 1px solid #eee;
+              padding-bottom: 10px;
+          }
+          
+          .tab-btn {
+              padding: 8px 16px;
+              background: none;
+              border: none;
+              cursor: pointer;
+              border-radius: 4px;
+          }
+          
+          .tab-btn.active {
+              background: var(--primary-color);
+              color: white;
+          }
+          
+          .order-card {
+              border: 1px solid #ddd;
+              border-radius: 8px;
+              padding: 15px;
+              margin-bottom: 15px;
+              transition: all 0.3s ease;
+              background: white;
+          }
+          
+          .order-card:hover {
+              box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+              transform: translateY(-3px);
+          }
+          
+          .order-header {
+              display: flex;
+              justify-content: space-between;
+              margin-bottom: 10px;
+              flex-wrap: wrap;
+          }
+          
+          .order-status {
+              padding: 4px 10px;
+              border-radius: 12px;
+              font-size: 0.8rem;
+              font-weight: bold;
+          }
+          
+          .status-processing {
+              background: #FFF3CD;
+              color: #856404;
+          }
+          
+          .status-shipped {
+              background: #CCE5FF;
+              color: #004085;
+          }
+          
+          .status-delivered {
+              background: #D4EDDA;
+              color: #155724;
+          }
+          
+          .order-products {
+              display: flex;
+              gap: 15px;
+              margin-top: 10px;
+              flex-wrap: wrap;
+          }
+          
+          .order-product-img {
+              width: 60px;
+              height: 60px;
+              object-fit: cover;
+              border-radius: 4px;
+          }
+          
+          .order-actions {
+              display: flex;
+              gap: 10px;
+              margin-top: 15px;
+              flex-wrap: wrap;
+          }
+          
+          .action-btn {
+              padding: 6px 12px;
+              border-radius: 4px;
+              font-size: 0.9rem;
+              cursor: pointer;
+          }
+          
+          .track-btn {
+              background: #2d3436;
+              color: white;
+              border: none;
+          }
+          
+          .reorder-btn {
+              background: white;
+              color: var(--primary-color);
+              border: 1px solid var(--primary-color);
+          }
+          
+          .feedback-btn {
+              background: var(--primary-color);
+              color: white;
+              border: none;
+          }
+          
+          /* Order Tracking Modal */
+          .modal {
+              position: fixed;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              background: rgba(0,0,0,0.8);
+              z-index: 2000;
+              display: none;
+              justify-content: center;
+              align-items: center;
+          }
+          
+          .modal-content {
+              background: white;
+              padding: 2rem;
+              border-radius: 10px;
+              max-width: 600px;
+              width: 90%;
+              max-height: 90vh;
+              overflow-y: auto;
+          }
+          
+          .close-modal {
+              float: right;
+              font-size: 2rem;
+              cursor: pointer;
+          }
+          
+          .order-timeline {
+              display: flex;
+              justify-content: space-between;
+              margin: 2rem 0;
+              position: relative;
+          }
+          
+          .order-timeline::before {
+              content: "";
+              position: absolute;
+              top: 15px;
+              left: 0;
+              right: 0;
+              height: 3px;
+              background: #ddd;
+              z-index: 1;
+          }
+          
+          .timeline-step {
+              text-align: center;
+              z-index: 2;
+              flex: 1;
+          }
+          
+          .step-icon {
+              width: 30px;
+              height: 30px;
+              background: #ddd;
+              border-radius: 50%;
+              margin: 0 auto;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+          }
+          
+          .timeline-step.completed .step-icon {
+              background: #4CAF50;
+              color: white;
+          }
+          
+          .timeline-step.active .step-icon {
+              background: #FFC107;
+              color: white;
+          }
+      </style>
+  </head>
+  <body>
+      <!-- Include your existing navigation -->
+      
+      <div class="container">
+          <h1>My Orders</h1>
+          
+          <div class="order-tabs">
+              <button class="tab-btn active" onclick="filterOrders('all')">All Orders</button>
+              <button class="tab-btn" onclick="filterOrders('processing')">Processing</button>
+              <button class="tab-btn" onclick="filterOrders('shipped')">Shipped</button>
+              <button class="tab-btn" onclick="filterOrders('delivered')">Delivered</button>
+          </div>
+          
+          <div class="orders-container" id="ordersContainer">
+              <!-- Orders will be loaded here -->
+          </div>
+      </div>
+      
+      <!-- Order Tracking Modal -->
+      <div id="orderTrackingModal" class="modal">
+          <div class="modal-content">
+              <span class="close-modal" onclick="closeModal('orderTrackingModal')">&times;</span>
+              <h2>Order Tracking</h2>
+              <div class="order-timeline" id="orderTimeline">
+                  <!-- Timeline will be inserted here -->
+              </div>
+              
+              <div class="order-details">
+                  <h3 id="trackingOrderNumber">Order #FH-2023-0567</h3>
+                  <div id="trackingOrderItems">
+                      <!-- Order items will be inserted here -->
+                  </div>
+                  <div class="order-summary" id="trackingOrderSummary">
+                      <!-- Order summary will be inserted here -->
+                  </div>
+              </div>
+              
+              <!-- Feedback Form (Shows only after delivery) -->
+              <div id="feedbackSection" style="display:none;">
+                  <h3>How was your experience?</h3>
+                  <form id="feedbackForm">
+                      <div class="rating">
+                          <span onclick="rateProduct(1)">☆</span>
+                          <span onclick="rateProduct(2)">☆</span>
+                          <span onclick="rateProduct(3)">☆</span>
+                          <span onclick="rateProduct(4)">☆</span>
+                          <span onclick="rateProduct(5)">☆</span>
+                      </div>
+                      <textarea placeholder="Your feedback helps dealers improve..." rows="3"></textarea>
+                      <button type="button" onclick="submitFeedback()">Submit Feedback</button>
+                  </form>
+              </div>
+          </div>
+      </div>
+      
+      <script>
+          // Sample order data (replace with real data from your backend)
+          const userOrders = [
+              {
+                  id: "FH-2023-0567",
+                  date: "2023-10-15",
+                  status: "processing",
+                  items: [
+                      { name: "69 T-Shirt", price: 30000, image: "men_clothes/69 t-shirt.png", quantity: 1 },
+                      { name: "Lace-Up Shoes", price: 200000, image: "men_clothes/lace shoes.png", quantity: 1 }
+                  ],
+                  total: 230000,
+                  payment: "Mobile Money",
+                  address: "Plot 42, Kampala Road",
+                  timeline: [
+                      { status: "ordered", date: "2023-10-15 10:30 AM", completed: true },
+                      { status: "processing", date: "Processing now", completed: true },
+                      { status: "shipped", date: "Expected Oct 18", completed: false },
+                      { status: "delivered", date: "", completed: false }
+                  ]
+              },
+              {
+                  id: "FH-2023-0421",
+                  date: "2023-10-05",
+                  status: "delivered",
+                  items: [
+                      { name: "African Print Maxi Dress", price: 80000, image: "https://images.unsplash.com/photo-1581044777550-4cfa60707c03", quantity: 2 }
+                  ],
+                  total: 160000,
+                  payment: "Credit Card",
+                  address: "Nakawa Division, Kampala",
+                  timeline: [
+                      { status: "ordered", date: "2023-10-05 09:15 AM", completed: true },
+                      { status: "processing", date: "2023-10-05 11:30 AM", completed: true },
+                      { status: "shipped", date: "2023-10-06 03:45 PM", completed: true },
+                      { status: "delivered", date: "2023-10-08 02:15 PM", completed: true }
+                  ]
+              }
+          ];
+  
+          // Display order history
+          function showOrderHistory(filter = 'all') {
+              const container = document.getElementById('ordersContainer');
+              container.innerHTML = '';
+              
+              const filteredOrders = filter === 'all' 
+                  ? userOrders 
+                  : userOrders.filter(order => order.status === filter);
+              
+              if(filteredOrders.length === 0) {
+                  container.innerHTML = '<p>No orders found</p>';
+                  return;
+              }
+              
+              filteredOrders.forEach(order => {
+                  const orderCard = document.createElement('div');
+                  orderCard.className = 'order-card';
+                  
+                  // Status badge
+                  let statusClass = '';
+                  let statusText = '';
+                  switch(order.status) {
+                      case 'processing':
+                          statusClass = 'status-processing';
+                          statusText = 'Processing';
+                          break;
+                      case 'shipped':
+                          statusClass = 'status-shipped';
+                          statusText = 'Shipped';
+                          break;
+                      case 'delivered':
+                          statusClass = 'status-delivered';
+                          statusText = 'Delivered';
+                          break;
+                  }
+                  
+                  // Product images
+                  const productsHTML = order.items.map(item => `
+                      <img src="${item.image}" alt="${item.name}" class="order-product-img" title="${item.name}">
+                  `).join('');
+                  
+                  // Actions available
+                  let actionsHTML = `
+                      <button class="action-btn track-btn" onclick="showOrderTracking('${order.id}')">
+                          Track Order
+                      </button>
+                  `;
+                  
+                  if(order.status === 'delivered') {
+                      actionsHTML += `
+                          <button class="action-btn feedback-btn" onclick="showFeedbackForm('${order.id}')">
+                              Leave Feedback
+                          </button>
+                          <button class="action-btn reorder-btn" onclick="reorderItems('${order.id}')">
+                              Reorder
+                          </button>
+                      `;
+                  }
+                  
+                  orderCard.innerHTML = `
+                      <div class="order-header">
+                          <div>
+                              <strong>Order #${order.id}</strong>
+                              <div>${order.date}</div>
+                          </div>
+                          <div class="order-status ${statusClass}">${statusText}</div>
+                      </div>
+                      
+                      <div>
+                          <strong>Total:</strong> UGX ${order.total.toLocaleString()}
+                      </div>
+                      
+                      <div class="order-products">
+                          ${productsHTML}
+                      </div>
+                      
+                      <div class="order-actions">
+                          ${actionsHTML}
+                      </div>
+                  `;
+                  
+                  container.appendChild(orderCard);
+              });
+          }
+          
+          // Filter orders by status
+          function filterOrders(status) {
+              // Update active tab
+              document.querySelectorAll('.tab-btn').forEach(btn => {
+                  btn.classList.remove('active');
+              });
+              event.target.classList.add('active');
+              
+              // Filter orders
+              showOrderHistory(status);
+          }
+          
+          // Show order tracking
+          function showOrderTracking(orderId) {
+              const order = userOrders.find(o => o.id === orderId);
+              if(!order) return;
+              
+              const modal = document.getElementById('orderTrackingModal');
+              document.getElementById('trackingOrderNumber').textContent = `Order #${order.id}`;
+              
+              // Update timeline
+              const timelineHTML = order.timeline.map(step => `
+                  <div class="timeline-step ${step.completed ? 'completed' : ''}">
+                      <div class="step-icon">${getStatusIcon(step.status)}</div>
+                      <div class="step-label">${formatStatus(step.status)}</div>
+                      <div class="step-date">${step.date}</div>
+                  </div>
+              `).join('');
+              
+              document.getElementById('orderTimeline').innerHTML = timelineHTML;
+              
+              // Update order items
+              const itemsHTML = order.items.map(item => `
+                  <div class="order-item">
+                      <img src="${item.image}" alt="${item.name}" style="width:50px;height:50px;object-fit:cover;">
+                      <div>
+                          <h4>${item.name}</h4>
+                          <p>UGX ${item.price.toLocaleString()} × ${item.quantity}</p>
+                      </div>
+                  </div>
+              `).join('');
+              
+              document.getElementById('trackingOrderItems').innerHTML = itemsHTML;
+              
+              // Update order summary
+              document.getElementById('trackingOrderSummary').innerHTML = `
+                  <p><strong>Total:</strong> UGX ${order.total.toLocaleString()}</p>
+                  <p><strong>Payment Method:</strong> ${order.payment}</p>
+                  <p><strong>Delivery Address:</strong> ${order.address}</p>
+              `;
+              
+              // Show/hide feedback section
+              document.getElementById('feedbackSection').style.display = 
+                  (order.status === "delivered") ? 'block' : 'none';
+              
+              // Show modal
+              modal.style.display = 'flex';
+          }
+          
+          function closeModal(modalId) {
+              document.getElementById(modalId).style.display = 'none';
+          }
+          
+          // Helper functions
+          function getStatusIcon(status) {
+              const icons = {
+                  ordered: "📦",
+                  processing: "🔄", 
+                  shipped: "🚚",
+                  delivered: "✅"
+              };
+              return icons[status] || "•";
+          }
+          
+          function formatStatus(status) {
+              return status.charAt(0).toUpperCase() + status.slice(1);
+          }
+          
+          // Show feedback form
+          function showFeedbackForm(orderId) {
+              const order = userOrders.find(o => o.id === orderId);
+              if(!order) return;
+              
+              showOrderTracking(orderId);
+              document.getElementById('feedbackSection').style.display = 'block';
+          }
+          
+          // Reorder functionality
+          function reorderItems(orderId) {
+              const order = userOrders.find(o => o.id === orderId);
+              if(order) {
+                  if(confirm(`Add ${order.items.length} item(s) to cart?`)) {
+                      // In a real app, you would add all items to cart
+                      order.items.forEach(item => {
+                          console.log(`Added to cart: ${item.name}`);
+                      });
+                      alert('Items added to cart!');
+                  }
+              }
+          }
+          
+          // Submit feedback
+          function submitFeedback() {
+              const feedback = document.querySelector('#feedbackForm textarea').value;
+              const rating = currentRating;
+              
+              // In a real app, you would send this to your backend
+              console.log("Feedback submitted:", {
+                  rating,
+                  comment: feedback
+              });
+              
+              alert("Thank you for your feedback!");
+              closeModal('orderTrackingModal');
+          }
+          
+          // Rating system
+          let currentRating = 0;
+          function rateProduct(stars) {
+              currentRating = stars;
+              const starsEl = document.querySelectorAll('.rating span');
+              starsEl.forEach((star, index) => {
+                  star.classList.toggle('active', index < stars);
+              });
+          }
+          
+          // Close modal when clicking outside
+          window.addEventListener('click', function(event) {
+              if(event.target.classList.contains('modal')) {
+                  closeModal('orderTrackingModal');
+              }
+          });
+          
+          // Initialize when page loads
+          document.addEventListener('DOMContentLoaded', function() {
+              showOrderHistory();
+          });
+      </script>
+  </body>
+  </html>
