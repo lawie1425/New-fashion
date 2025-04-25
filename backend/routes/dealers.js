@@ -1,14 +1,9 @@
-const express = require('express');
-const router = express.Router();
-const Dealer = require('../models/Dealer');
-
-router.get('/', async (req, res) => {
+router.get('/payments', require('../routes/admin').adminMiddleware, async (req, res) => {
     try {
-        const dealers = await Dealer.find();
-        res.json(dealers);
+        const payments = await Payment.find().populate('dealerId', 'name email');
+        res.json(payments);
     } catch (err) {
+        console.error(err);
         res.status(500).json({ error: 'Server error' });
     }
 });
-
-module.exports = router;

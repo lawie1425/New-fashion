@@ -1,30 +1,78 @@
 const express = require('express');
 const router = express.Router();
-const Order = require('/Projects/New fashion/backend/models/order');
-const Cart = require('/Projects/New fashion/backend/models/cart');
+const Order = require('d:/Projects/New fashion/backend/models/order');
+const { adminMiddleware } = require('./admin');
 
-router.post('/', async (req, res) => {
-    const { userId, fullName, email, phone, shippingAddress, paymentMethod, transactionId, ordersByDealer, total } = req.body;
+router.get('/analytics', adminMiddleware, async (req, res) => {
     try {
-        const cart = await Cart.findOne({ userId }).populate('items.productId');
-        if (!cart || cart.items.length === 0) {
-            return res.status(400).json({ error: 'Cart is empty' });
-        }
+        // Monthly Sales
+        const monthlySales = await Order.aggregate([
+            {
+                $group: {
+                    _id: { $month: '$createdAt' },
+                    total: { $sum: '$total' }
+                }
+            },
+            { $sort: { '_id': 1 } }
+        ]);
 
-        const order = new Order({
-            fullName,
-            email,
-            phone,
-            shippingAddress,
-            paymentMethod,
-            ordersByDealer,
-            total,
-            transactionId
+        // Top Products
+        const topProducts = await Order.aggregate([
+            { $unwind: '$items' },
+            {
+                $group: {
+                    _id: '$items.productId',
+                    totalSold: { $sum: '$items.quantity' },
+                    revenue: { $sum: { $multiply: ['$items.quantity', '$items.price'] } }
+                }
+            },
+            {
+                $lookup: {
+                    from: 'products',
+                    localField: '_id',
+                    foreignField: 'id',
+                    as: 'product'
+                }
+            },
+            { $unwind: '$product' },
+            { $sort: { totalSold: -1 } },
+            { $limit: 5 }
+        ]);
+
+        // Revenue by Category
+        const categoryRevenue = await Order.aggregate([
+            { $unwind: '$items' },
+            {
+                $lookup: {
+                    from: 'products',
+                    localField: 'items.productId',
+                    foreignField: 'id',
+                    as: 'product'
+                }
+            },
+            { $unwind: '$product' },
+            {
+                $group: {
+                    _id: '$product.category',
+                    revenue: { $sum: { $multiply: ['$items.quantity', '$items.price'] } }
+                }
+            }
+        ]);
+
+        res.json({
+            monthlySales: monthlySales.map(s => ({ month: s._id, total: s.total })),
+            topProducts: topProducts.map(p => ({
+                name: p.product.name,
+                totalSold: p.totalSold,
+                revenue: p.revenue
+            })),
+            categoryRevenue: categoryRevenue.map(c => ({
+                category: c._id,
+                revenue: c.revenue
+            }))
         });
-
-        await order.save();
-        res.json(order);
     } catch (err) {
+        console.error(err);
         res.status(500).json({ error: 'Server error' });
     }
 });
