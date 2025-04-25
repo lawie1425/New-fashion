@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Dealer Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dealer Dashboard - Fashion Hub UG</title>
     <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
@@ -10,8 +12,8 @@
             --secondary-color: #2d3436;
             --accent-color: #ff4081;
             --text-light: #666;
+            --transition: all 0.3s ease;
         }
-
         .dashboard {
             display: grid;
             grid-template-columns: 280px 1fr;
@@ -19,7 +21,6 @@
             font-family: 'Segoe UI', sans-serif;
             background: #f8f9fa;
         }
-
         .sidebar {
             background: var(--secondary-color);
             color: white;
@@ -28,12 +29,10 @@
             top: 0;
             height: 100vh;
         }
-
         .main-content {
             padding: 2rem;
             background: white;
         }
-
         .product-form {
             max-width: 800px;
             margin: 0 auto;
@@ -42,31 +41,26 @@
             border-radius: 12px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-
         .form-group {
             margin-bottom: 1.5rem;
         }
-
         .form-label {
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 600;
             color: var(--secondary-color);
         }
-
         .form-control {
             width: 100%;
             padding: 0.8rem;
             border: 2px solid #ddd;
             border-radius: 8px;
-            transition: all 0.3s ease;
+            transition: var(--transition);
         }
-
         .form-control:focus {
             border-color: var(--primary-color);
             box-shadow: 0 0 0 3px rgba(233,30,99,0.1);
         }
-
         .image-preview {
             width: 200px;
             height: 200px;
@@ -76,7 +70,6 @@
             background-size: cover;
             background-position: center;
         }
-
         .btn-primary {
             background: var(--primary-color);
             color: white;
@@ -84,64 +77,46 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: var(--transition);
         }
-
         .btn-primary:hover {
             background: var(--accent-color);
             transform: translateY(-2px);
         }
-
         .product-list {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 2rem;
             margin-top: 2rem;
         }
-
         .product-card {
             background: white;
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-
         .product-image {
             width: 100%;
             height: 200px;
             object-fit: cover;
         }
-
         .product-info {
             padding: 1rem;
         }
-
         .product-info h3 {
             margin: 0 0 0.5rem;
             color: var(--secondary-color);
         }
-
         .product-info p {
             margin: 0.5rem 0;
             color: var(--text-light);
         }
-
         .stock-indicator {
             font-weight: bold;
         }
-
-        .stock-low {
-            color: #d32f2f;
-        }
-
-        .stock-medium {
-            color: #ffa000;
-        }
-
-        .stock-high {
-            color: #4caf50;
-        }
-
+        .stock-low { color: #d32f2f; }
+        .stock-medium { color: #ffa000; }
+        .stock-high { color: #4caf50; }
         .action-btn {
             padding: 0.5rem 1rem;
             border: none;
@@ -149,104 +124,57 @@
             cursor: pointer;
             margin: 0.5rem 0.25rem 0 0;
             color: white;
-            transition: background 0.3s ease;
+            transition: var(--transition);
         }
-
-        .sell-btn {
-            background: #4caf50;
-        }
-
-        .sell-btn:hover {
-            background: #388e3c;
-        }
-
-        .restock-btn {
-            background: #2196f3;
-        }
-
-        .restock-btn:hover {
-            background: #1976d2;
-        }
-
-        .feedback-btn {
-            background: #f57c00;
-        }
-
-        .feedback-btn:hover {
-            background: #e65100;
-        }
-
+        .sell-btn { background: #4caf50; }
+        .sell-btn:hover { background: #388e3c; }
+        .restock-btn { background: #2196f3; }
+        .restock-btn:hover { background: #1976d2; }
+        .feedback-btn { background: #f57c00; }
+        .feedback-btn:hover { background: #e65100; }
         .nav-list {
             list-style: none;
             padding: 0;
             margin: 2rem 0;
         }
-
         .nav-item {
             padding: 1rem;
             margin: 0.5rem 0;
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: var(--transition);
         }
-
         .nav-item:hover {
             background: rgba(255,255,255,0.1);
         }
-
         .nav-item.active {
             background: var(--primary-color);
         }
-
         .content-section {
             display: none;
             animation: fadeIn 0.3s ease;
         }
-
         .content-section.active {
             display: block;
         }
-
-        .analytics-section {
+        .analytics-section, .feedback-section {
             padding: 2rem;
             background: white;
             border-radius: 12px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-
-        .feedback-section {
-            padding: 2rem;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .feedback-list {
-            margin-top: 1rem;
-        }
-
-        .feedback-item {
-            border-bottom: 1px solid #eee;
-            padding: 1rem 0;
-        }
-
-        .feedback-item:last-child {
-            border-bottom: none;
-        }
-
         .modal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+            background: rgba(0,0,0,0.5);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 1000;
         }
-
         .modal-content {
             background: white;
             padding: 2rem;
@@ -255,7 +183,6 @@
             width: 90%;
             position: relative;
         }
-
         .modal-close {
             position: absolute;
             top: 10px;
@@ -264,15 +191,18 @@
             cursor: pointer;
             color: #333;
         }
-
-        .settings-form {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                height: auto;
+                position: static;
+            }
         }
     </style>
 </head>
@@ -287,12 +217,12 @@
                     <li class="nav-item" data-section="feedback">Feedback</li>
                     <li class="nav-item" data-section="analytics">Sales Analytics</li>
                     <li class="nav-item" data-section="settings">Account Settings</li>
+                    <li class="nav-item" onclick="handleLogout()">Logout</li>
                 </ul>
             </nav>
         </div>
 
         <div class="main-content">
-            <!-- Add Product Section -->
             <div id="add-product" class="content-section active">
                 <h2>Add New Product</h2>
                 <p>Fill in the details to add a product to your inventory.</p>
@@ -314,8 +244,8 @@
                         <input type="number" class="form-control" id="productStock" min="0" required>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Product Images</label>
-                        <input type="file" class="form-control" id="productImages" accept="image/*">
+                        <label class="form-label">Product Image (URL)</label>
+                        <input type="url" class="form-control" id="productImage" placeholder="Image URL" required>
                         <div class="image-preview" id="imagePreview"></div>
                     </div>
                     <div class="form-group">
@@ -335,21 +265,18 @@
                 </form>
             </div>
 
-            <!-- Inventory Section -->
             <div id="inventory" class="content-section">
                 <h2>Inventory</h2>
-                <p>Monitor your product stock levels. Use "Sell 1" to simulate a sale, "Restock 5" to add stock, or "View Feedback" to see comments.</p>
+                <p>Monitor your product stock levels.</p>
                 <div class="product-list" id="inventoryProducts"></div>
             </div>
 
-            <!-- Feedback Section -->
             <div id="feedback" class="content-section feedback-section">
                 <h2>Feedback</h2>
                 <p>View all customer and admin feedback for your products.</p>
                 <div class="feedback-list" id="allFeedback"></div>
             </div>
 
-            <!-- Analytics Section -->
             <div id="analytics" class="content-section analytics-section">
                 <h2>Sales Analytics</h2>
                 <div class="analytics-content">
@@ -357,7 +284,6 @@
                 </div>
             </div>
 
-            <!-- Settings Section -->
             <div id="settings" class="content-section">
                 <div class="settings-form">
                     <h2>Account Settings</h2>
@@ -370,6 +296,10 @@
                         <input type="email" class="form-control" id="businessEmail">
                     </div>
                     <div class="form-group">
+                        <label class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="businessPhone">
+                    </div>
+                    <div class="form-group">
                         <label class="form-label">Change Password</label>
                         <input type="password" class="form-control" id="newPassword">
                     </div>
@@ -377,7 +307,6 @@
                 </div>
             </div>
 
-            <!-- Feedback Modal -->
             <div id="feedbackModal" class="modal" style="display: none;">
                 <div class="modal-content">
                     <span class="modal-close" onclick="closeFeedbackModal()">×</span>
@@ -398,7 +327,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // Tagify Initialization
+        const API_BASE_URL = 'http://localhost:5000/api';
         const tagInput = document.getElementById('productTags');
         new Tagify(tagInput, {
             whitelist: ['fashion', 'trendy', 'casual', 'formal', 'sale'],
@@ -406,244 +335,205 @@
             dropdown: { enabled: 0 }
         });
 
-        // Image Preview
-        document.getElementById('productImages').addEventListener('change', function(e) {
+        document.getElementById('productImage').addEventListener('input', function(e) {
             const preview = document.getElementById('imagePreview');
-            if (e.target.files[0]) {
-                preview.style.backgroundImage = `url(${URL.createObjectURL(e.target.files[0])})`;
-            } else {
-                preview.style.backgroundImage = '';
-            }
+            const url = e.target.value;
+            preview.style.backgroundImage = url ? `url(${url})` : '';
         });
 
-        // Inventory Management
-        function loadInventory() {
-            let products = JSON.parse(localStorage.getItem('products') || '[]');
-            // Add sample products if none exist
-            if (products.length === 0) {
-                products = [
-                    {
-                        name: "African Print Dress",
-                        description: "A vibrant women's dress",
-                        price: "180000",
-                        stock: 50,
-                        image: "https://images.unsplash.com/photo-1581044777550-4cfa60707c03?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80",
-                        category: "women",
-                        tags: ["fashion", "trendy"],
-                        feedback: {
-                            customer: [
-                                { user: "Sarah K.", comment: "Love the fit and colors!", rating: 5 },
-                                { user: "Mike L.", comment: "Slightly tight.", rating: 3 }
-                            ],
-                            admin: [
-                                { admin: "Admin", comment: "Popular item, restock recommended." },
-                                { admin: "Admin", comment: "Check stitching quality." }
-                            ]
-                        }
-                    },
-                    {
-                        name: "Men's Casual Shirt",
-                        description: "Comfortable cotton shirt",
-                        price: "120000",
-                        stock: 20,
-                        image: "https://images.unsplash.com/photo-1598032895397-b947244972c2?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80",
-                        category: "men",
-                        tags: ["casual", "fashion"],
-                        feedback: {
-                            customer: [
-                                { user: "Peter M.", comment: "Great for daily wear!", rating: 4 }
-                            ],
-                            admin: [
-                                { admin: "Admin", comment: "Add more color options." }
-                            ]
-                        }
-                    }
-                ];
-                localStorage.setItem('products', JSON.stringify(products));
-            }
-
+        async function loadInventory() {
             const container = document.getElementById('inventoryProducts');
-            container.innerHTML = '';
+            container.innerHTML = '<p>Loading...</p>';
+            try {
+                const response = await fetch(`${API_BASE_URL}/dealers/products`, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('dealerToken')}` }
+                });
+                const products = await response.json();
+                if (!response.ok) throw new Error(products.error);
 
-            products.forEach((product, index) => {
-                const stockClass = product.stock <= 10 ? 'stock-low' : product.stock <= 50 ? 'stock-medium' : 'stock-high';
-                const card = document.createElement('div');
-                card.className = 'product-card';
-                card.innerHTML = `
-                    <img src="${product.image || 'https://via.placeholder.com/300'}" class="product-image" alt="${product.name}">
-                    <div class="product-info">
-                        <h3>${product.name}</h3>
-                        <p>Price: UGX ${parseInt(product.price).toLocaleString()}</p>
-                        <p>Category: ${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</p>
-                        <p class="stock-indicator ${stockClass}">Stock: ${product.stock} ${product.stock <= 10 ? '(Low)' : ''}</p>
-                        <button class="action-btn sell-btn" onclick="simulateSale(${index}, 1)">Sell 1</button>
-                        <button class="action-btn restock-btn" onclick="restockProduct(${index}, 5)">Restock 5</button>
-                        <button class="action-btn feedback-btn" onclick="showFeedback(${index})">View Feedback</button>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
+                container.innerHTML = '';
+                products.forEach((product, index) => {
+                    const stockClass = product.stock <= 10 ? 'stock-low' : product.stock <= 50 ? 'stock-medium' : 'stock-high';
+                    const card = document.createElement('div');
+                    card.className = 'product-card';
+                    card.innerHTML = `
+                        <img src="${product.image}" class="product-image" alt="${product.name}">
+                        <div class="product-info">
+                            <h3>${product.name}</h3>
+                            <p>Price: UGX ${parseInt(product.price).toLocaleString()}</p>
+                            <p>Category: ${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</p>
+                            <p class="stock-indicator ${stockClass}">Stock: ${product.stock} ${product.stock <= 10 ? '(Low)' : ''}</p>
+                            <button class="action-btn sell-btn" onclick="updateStock('${product.id}', ${product.stock - 1})">Sell 1</button>
+                            <button class="action-btn restock-btn" onclick="updateStock('${product.id}', ${product.stock + 5})">Restock 5</button>
+                            <button class="action-btn feedback-btn" onclick="showFeedback('${product.id}')">View Feedback</button>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+
+                if (products.length === 0) {
+                    container.innerHTML = '<p>No products available.</p>';
+                }
+            } catch (err) {
+                console.error('Error loading inventory:', err);
+                container.innerHTML = '<p>Error loading products.</p>';
+            }
         }
 
-        // Form Submission
-        document.getElementById('productForm').addEventListener('submit', function(e) {
+        document.getElementById('productForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const products = JSON.parse(localStorage.getItem('products') || '[]');
-            const imageFile = document.getElementById('productImages').files[0];
             const product = {
                 name: document.getElementById('productName').value,
                 description: document.getElementById('productDescription').value,
-                price: document.getElementById('productPrice').value,
+                price: parseInt(document.getElementById('productPrice').value),
                 stock: parseInt(document.getElementById('productStock').value),
-                image: imageFile ? URL.createObjectURL(imageFile) : 'https://via.placeholder.com/300',
+                image: document.getElementById('productImage').value,
                 category: document.getElementById('productCategory').value,
-                tags: JSON.parse(document.getElementById('productTags').value || '[]').map(t => t.value),
-                feedback: {
-                    customer: [],
-                    admin: []
-                }
+                tags: JSON.parse(document.getElementById('productTags').value || '[]').map(t => t.value)
             };
-            products.push(product);
-            localStorage.setItem('products', JSON.stringify(products));
-            alert('Product published successfully!');
-            this.reset();
-            document.getElementById('imagePreview').style.backgroundImage = '';
-            tagInput.value = '';
-            loadInventory();
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/dealers/products`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('dealerToken')}`
+                    },
+                    body: JSON.stringify(product)
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    alert('Product published successfully!');
+                    this.reset();
+                    document.getElementById('imagePreview').style.backgroundImage = '';
+                    tagInput.value = '';
+                    loadInventory();
+                } else {
+                    alert(data.error || 'Failed to add product.');
+                }
+            } catch (err) {
+                console.error('Error adding product:', err);
+                alert('An error occurred.');
+            }
         });
 
-        // Simulate Sale
-        function simulateSale(productIndex, quantity) {
-            const products = JSON.parse(localStorage.getItem('products') || '[]');
-            if (products[productIndex] && products[productIndex].stock >= quantity) {
-                products[productIndex].stock -= quantity;
-                localStorage.setItem('products', JSON.stringify(products));
-                loadInventory();
-                alert(`Sold ${quantity} unit(s) of ${products[productIndex].name}`);
-            } else {
-                alert('Not enough stock to sell!');
+        async function updateStock(productId, newStock) {
+            if (newStock < 0) {
+                alert('Stock cannot be negative.');
+                return;
+            }
+            try {
+                const response = await fetch(`${API_BASE_URL}/dealers/products/${productId}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('dealerToken')}`
+                    },
+                    body: JSON.stringify({ stock: newStock })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    alert(`Stock updated to ${newStock}`);
+                    loadInventory();
+                } else {
+                    alert(data.error || 'Failed to update stock.');
+                }
+            } catch (err) {
+                console.error('Error updating stock:', err);
+                alert('An error occurred.');
             }
         }
 
-        // Restock Product
-        function restockProduct(productIndex, quantity) {
-            const products = JSON.parse(localStorage.getItem('products') || '[]');
-            if (products[productIndex]) {
-                products[productIndex].stock += quantity;
-                localStorage.setItem('products', JSON.stringify(products));
-                loadInventory();
-                alert(`Restocked ${quantity} unit(s) of ${products[productIndex].name}`);
+        async function showFeedback(productId) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/dealers/products`, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('dealerToken')}` }
+                });
+                const products = await response.json();
+                const product = products.find(p => p.id === productId);
+                if (!product) return;
+
+                const modal = document.getElementById('feedbackModal');
+                const productName = document.getElementById('feedbackProductName');
+                const customerFeedback = document.getElementById('customerFeedback');
+                const adminFeedback = document.getElementById('adminFeedback');
+
+                productName.textContent = product.name;
+                customerFeedback.innerHTML = product.feedback.customer.length
+                    ? product.feedback.customer.map(f => `
+                        <div class="feedback-item">
+                            <strong>${f.user}</strong>: ${f.comment} <br>
+                            Rating: ${'★'.repeat(f.rating)}${'☆'.repeat(5 - f.rating)}
+                        </div>
+                    `).join('')
+                    : '<p>No customer feedback yet.</p>';
+                adminFeedback.innerHTML = product.feedback.admin.length
+                    ? product.feedback.admin.map(f => `
+                        <div class="feedback-item">
+                            <strong>${f.admin}</strong>: ${f.comment}
+                        </div>
+                    `).join('')
+                    : '<p>No admin feedback yet.</p>';
+
+                modal.style.display = 'block';
+            } catch (err) {
+                console.error('Error loading feedback:', err);
+                alert('An error occurred.');
             }
-        }
-
-        // Feedback Modal
-        function showFeedback(productIndex) {
-            const products = JSON.parse(localStorage.getItem('products') || '[]');
-            const product = products[productIndex];
-            if (!product) return;
-
-            const modal = document.getElementById('feedbackModal');
-            const productName = document.getElementById('feedbackProductName');
-            const customerFeedback = document.getElementById('customerFeedback');
-            const adminFeedback = document.getElementById('adminFeedback');
-
-            productName.textContent = product.name;
-
-            customerFeedback.innerHTML = product.feedback.customer.length
-                ? product.feedback.customer.map(f => `
-                    <div class="feedback-item">
-                        <strong>${f.user}</strong>: ${f.comment} <br>
-                        Rating: ${'★'.repeat(f.rating)}${'☆'.repeat(5 - f.rating)}
-                    </div>
-                `).join('')
-                : '<p>No customer feedback yet.</p>';
-
-            adminFeedback.innerHTML = product.feedback.admin.length
-                ? product.feedback.admin.map(f => `
-                    <div class="feedback-item">
-                        <strong>${f.admin}</strong>: ${f.comment}
-                    </div>
-                `).join('')
-                : '<p>No admin feedback yet.</p>';
-
-            modal.style.display = 'block';
         }
 
         function closeFeedbackModal() {
             document.getElementById('feedbackModal').style.display = 'none';
         }
 
-        // All Feedback Section
-        function loadAllFeedback() {
-            const products = JSON.parse(localStorage.getItem('products') || '[]');
+        async function loadAllFeedback() {
             const container = document.getElementById('allFeedback');
-            container.innerHTML = '';
-
-            products.forEach(product => {
-                const feedbackDiv = document.createElement('div');
-                feedbackDiv.innerHTML = `
-                    <h3>${product.name}</h3>
-                    <div class="feedback-section">
-                        <h4>Customer Feedback</h4>
-                        ${product.feedback.customer.length
-                            ? product.feedback.customer.map(f => `
-                                <div class="feedback-item">
-                                    <strong>${f.user}</strong>: ${f.comment} <br>
-                                    Rating: ${'★'.repeat(f.rating)}${'☆'.repeat(5 - f.rating)}
-                                </div>
-                            `).join('')
-                            : '<p>No customer feedback yet.</p>'}
-                    </div>
-                    <div class="feedback-section">
-                        <h4>Admin Feedback</h4>
-                        ${product.feedback.admin.length
-                            ? product.feedback.admin.map(f => `
-                                <div class="feedback-item">
-                                    <strong>${f.admin}</strong>: ${f.comment}
-                                </div>
-                            `).join('')
-                            : '<p>No admin feedback yet.</p>'}
-                    </div>
-                `;
-                container.appendChild(feedbackDiv);
-            });
-
-            if (products.length === 0) {
-                container.innerHTML = '<p>No products or feedback available.</p>';
+            container.innerHTML = '<p>Loading...</p>';
+            try {
+                const response = await fetch(`${API_BASE_URL}/dealers/products`, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('dealerToken')}` }
+                });
+                const products = await response.json();
+                container.innerHTML = '';
+                products.forEach(product => {
+                    const feedbackDiv = document.createElement('div');
+                    feedbackDiv.innerHTML = `
+                        <h3>${product.name}</h3>
+                        <div class="feedback-section">
+                            <h4>Customer Feedback</h4>
+                            ${product.feedback.customer.length
+                                ? product.feedback.customer.map(f => `
+                                    <div class="feedback-item">
+                                        <strong>${f.user}</strong>: ${f.comment} <br>
+                                        Rating: ${'★'.repeat(f.rating)}${'☆'.repeat(5 - f.rating)}
+                                    </div>
+                                `).join('')
+                                : '<p>No customer feedback yet.</p>'}
+                        </div>
+                        <div class="feedback-section">
+                            <h4>Admin Feedback</h4>
+                            ${product.feedback.admin.length
+                                ? product.feedback.admin.map(f => `
+                                    <div class="feedback-item">
+                                        <strong>${f.admin}</strong>: ${f.comment}
+                                    </div>
+                                `).join('')
+                                : '<p>No admin feedback yet.</p>'}
+                        </div>
+                    `;
+                    container.appendChild(feedbackDiv);
+                });
+                if (products.length === 0) {
+                    container.innerHTML = '<p>No products or feedback available.</p>';
+                }
+            } catch (err) {
+                console.error('Error loading feedback:', err);
+                container.innerHTML = '<p>Error loading feedback.</p>';
             }
         }
 
-        // Navigation
-        function initNavigation() {
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-                    this.classList.add('active');
-                    const sectionId = this.dataset.section;
-                    document.querySelectorAll('.content-section').forEach(sec => {
-                        sec.classList.remove('active');
-                    });
-                    document.getElementById(sectionId).classList.add('active');
-
-                    switch (sectionId) {
-                        case 'analytics':
-                            initChart();
-                            break;
-                        case 'inventory':
-                            loadInventory();
-                            break;
-                        case 'feedback':
-                            loadAllFeedback();
-                            break;
-                    }
-                });
-            });
-        }
-
-        // Sales Chart
         let salesChart = null;
-
-        function initChart() {
+        async function initChart() {
             if (salesChart) salesChart.destroy();
             const ctx = document.getElementById('salesChart').getContext('2d');
             salesChart = new Chart(ctx, {
@@ -660,43 +550,101 @@
                 },
                 options: {
                     responsive: true,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Sales Performance'
-                        }
-                    },
+                    plugins: { title: { display: true, text: 'Sales Performance' } },
                     scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                callback: function(value) {
-                                    return 'UGX ' + value.toLocaleString();
-                                }
-                            }
-                        }
+                        y: { beginAtZero: true, ticks: { callback: value => 'UGX ' + value.toLocaleString() } }
                     }
                 }
             });
         }
 
-        // Settings
-        function saveSettings() {
+        async function saveSettings() {
             const settings = {
-                businessName: document.getElementById('businessName').value,
-                email: document.getElementById('businessEmail').value
+                name: document.getElementById('businessName').value,
+                email: document.getElementById('businessEmail').value,
+                phone: document.getElementById('businessPhone').value,
+                newPassword: document.getElementById('newPassword').value
             };
-            localStorage.setItem('dealerSettings', JSON.stringify(settings));
-            alert('Settings saved successfully!');
+            try {
+                const response = await fetch(`${API_BASE_URL}/dealers/${localStorage.getItem('dealerId')}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('dealerToken')}`
+                    },
+                    body: JSON.stringify(settings)
+                });
+                if (response.ok) {
+                    alert('Settings saved successfully!');
+                } else {
+                    const data = await response.json();
+                    alert(data.error || 'Failed to save settings.');
+                }
+            } catch (err) {
+                console.error('Error saving settings:', err);
+                alert('An error occurred.');
+            }
         }
 
-        // Initialize Dashboard
-        function initDashboard() {
-            initNavigation();
-            loadInventory();
-            const savedSettings = JSON.parse(localStorage.getItem('dealerSettings') || '{}');
-            document.getElementById('businessName').value = savedSettings.businessName || '';
-            document.getElementById('businessEmail').value = savedSettings.email || '';
+        function handleLogout() {
+            localStorage.removeItem('dealerToken');
+            localStorage.removeItem('dealerId');
+            localStorage.removeItem('token');
+            localStorage.removeItem('userId');
+            localStorage.removeItem('email');
+            localStorage.removeItem('adminToken');
+            localStorage.removeItem('adminId');
+            alert('Logged out successfully!');
+            window.location.href = 'dealer-login.html';
+        }
+
+        function initNavigation() {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    if (this.textContent === 'Logout') return;
+                    document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                    this.classList.add('active');
+                    const sectionId = this.dataset.section;
+                    document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
+                    document.getElementById(sectionId).classList.add('active');
+                    switch (sectionId) {
+                        case 'analytics': initChart(); break;
+                        case 'inventory': loadInventory(); break;
+                        case 'feedback': loadAllFeedback(); break;
+                    }
+                });
+            });
+        }
+
+        async function initDashboard() {
+            const dealerToken = localStorage.getItem('dealerToken');
+            if (!dealerToken) {
+                alert('Please log in as a dealer.');
+                window.location.href = 'dealer-login.html';
+                return;
+            }
+            try {
+                const response = await fetch(`${API_BASE_URL}/dealers/${localStorage.getItem('dealerId')}`, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('dealerToken')}` }
+                });
+                const dealer = await response.json();
+                if (!response.ok || dealer.status !== 'approved' || dealer.subscription.status !== 'active') {
+                    alert('Account not approved or subscription inactive. Please contact support.');
+                    localStorage.removeItem('dealerToken');
+                    localStorage.removeItem('dealerId');
+                    window.location.href = 'dealer-login.html';
+                    return;
+                }
+                initNavigation();
+                loadInventory();
+                document.getElementById('businessName').value = dealer.name;
+                document.getElementById('businessEmail').value = dealer.email;
+                document.getElementById('businessPhone').value = dealer.phone;
+            } catch (err) {
+                console.error('Error initializing dashboard:', err);
+                alert('An error occurred. Please log in again.');
+                window.location.href = 'dealer-login.html';
+            }
         }
 
         window.onload = initDashboard;

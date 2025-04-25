@@ -4,229 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fashion Hub Uganda - Shop Latest Trends</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         :root {
             --primary-color: #e91e63;
             --secondary-color: #2d3436;
+            --accent-color: #ff5722;
         }
 
-        body {
-            font-family: 'Helvetica Neue', sans-serif;
-            margin: 0;
-            background: #f8f9fa;
-        }
-
-        /* Navigation Bar */
-        .nav-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: var(--secondary-color);
-            padding: 10px 20px;
-            color: white;
-            flex-wrap: wrap;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-
-        .nav-buttons {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .nav-buttons button {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: background 0.3s ease;
-        }
-
-        .nav-buttons button:hover {
-            background: #c2185b;
-        }
-
-        .hero {
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
-                            url('https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
-            background-size: cover;
-            color: white;
-            text-align: center;
-            padding: 100px 20px;
-        }
-
-        .search-bar {
-            max-width: 600px;
-            margin: 20px auto;
-        }
-
-        #searchInput {
-            width: 100%;
-            padding: 15px;
-            border-radius: 25px;
-            border: 2px solid var(--primary-color);
-            font-size: 16px;
-        }
-
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            padding: 40px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .product-card {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .product-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .product-image {
-            width: 100%;
-            height: 300px;
-            object-fit: cover;
-            border-bottom: 2px solid #eee;
-        }
-
-        .product-info {
-            padding: 15px;
-        }
-
-        .product-price {
-            color: var(--primary-color);
-            font-weight: bold;
-            font-size: 1.2em;
-            margin: 10px 0;
-        }
-
-        .btn {
-            background: var(--primary-color);
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        .tagline {
-            text-align: center;
-            padding: 40px 20px;
-            background: white;
-        }
-
-        .tagline h2 {
-            color: var(--secondary-color);
-            font-size: 2em;
-            margin-bottom: 20px;
-        }
-        /* Floating Button */
-        .floating-dealer-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: #007bff;
-            color: white;
-            padding: 25px 35px;
-            border-radius: 25px;
-            border: none;
-            cursor: pointer;
-            z-index: 1000;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            animation: pulse 2s infinite;
-            transition: all 0.3s ease;
-        }
-
-        .floating-dealer-btn:hover {
-            background: #0056b3;
-            transform: scale(1.05);
-            animation: none;
-        }
-
-        /* Dealer Panel */
-        .dealer-panel {
-            position: fixed;
-            top: -100%;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.9);
-            z-index: 2000;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            visibility: hidden;
-        }
-
-        .dealer-panel.active {
-            top: 0;
-            visibility: visible;
-        }
-
-        .panel-content {
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            max-width: 600px;
-            width: 90%;
-            position: relative;
-            transform: translateY(-50px);
-            opacity: 0;
-            transition: all 0.3s 0.2s ease-out;
-        }
-
-        .dealer-panel.active .panel-content {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: none;
-            border: none;
-            font-size: 2rem;
-            cursor: pointer;
-            color: #666;
-        }
-
-        .cta-btn {
-            background: #007bff;
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 25px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            margin-top: 1.5rem;
-            transition: background 0.3s ease;
-        }
-
-        .dealer-panel:hover {
-            background: #262727bb;
-        }
-
-        .dealer-benefits {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            margin: 1.5rem 0;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes pulse {
@@ -235,466 +24,888 @@
             100% { transform: scale(1); }
         }
 
-        @media (max-width: 768px) {
-            .floating-dealer-btn {
-                top: 20px;
-                right: 10px;
-                padding: 12px 18px;
-                font-size: 1.9rem;
-            }
-
-            .panel-content {
-                padding: 1.5rem;
-            }
-        }
-        .whatsapp-support {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
         }
 
-        .whatsapp-support a {
+        @keyframes pulse-animation {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background: #f8f9fa;
+            position: relative;
+            padding-bottom: 60px;
+        }
+
+        /* Navigation Bar */
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--secondary-color);
+            padding: 15px 40px;
+            color: white;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            font-size: clamp(1.5rem, 3vw, 1.8rem);
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-buttons button, .nav-buttons a {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: clamp(0.8rem, 1.5vw, 0.9rem);
             display: flex;
             align-items: center;
-            text-decoration: none;
-            background: #25D366;
-            color: white;
-            padding: 15px;
-            border-radius: 50px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
+            gap: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        .whatsapp-support a:hover {
+        .nav-buttons button:hover, .nav-buttons a:hover {
+            background: #c2185b;
             transform: translateY(-3px);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
-            background: #128C7E;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
-        .whatsapp-support i {
-            font-size: 32px;
-            margin-right: 10px;
+        .cart-count {
+            background: var(--accent-color);
+            color: white;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            margin-left: 5px;
+            animation: pulse 2s infinite;
         }
 
-        .tooltip {
-            display: none;
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-            margin-right: 8px;
-        }
-
-        .whatsapp-support:hover .tooltip {
+        /* Profile Dropdown */
+        .profile-dropdown {
+            position: relative;
             display: inline-block;
-            animation: fadeIn 0.3s ease;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .profile-btn {
+            background: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+            font-weight: 500;
+        }
+
+        .profile-btn:hover {
+            background: #c2185b;
+        }
+
+        .profile-dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .profile-dropdown-content a {
+            color: var(--secondary-color);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s;
+        }
+
+        .profile-dropdown-content a:hover {
+            background-color: #f1f1f1;
+            color: var(--primary-color);
+        }
+
+        .profile-dropdown:hover .profile-dropdown-content {
+            display: block;
+        }
+
+        .profile-pic {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            height: 70vh;
+            min-height: 400px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .hero-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(45, 52, 54, 0.5);
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            padding: 0 20px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero-content p {
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .hero-btn {
+            background: var(--primary-color);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            transition: all 0.3s ease;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .hero-btn:hover {
+            background: #c2185b;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            animation: fadeIn 0.8s ease-out;
+            animation-fill-mode: both;
+            opacity: 0;
+        }
+
+        .product-card:nth-child(1) { animation-delay: 0.1s; }
+        .product-card:nth-child(2) { animation-delay: 0.2s; }
+        .product-card:nth-child(3) { animation-delay: 0.3s; }
+        .product-card:nth-child(4) { animation-delay: 0.4s; }
+        .product-card:nth-child(5) { animation-delay: 0.5s; }
+        .product-card:nth-child(6) { animation-delay: 0.6s; }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-price {
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 1.3em;
+            margin: 15px 0;
+        }
+
+        .btn {
+            background: var(--primary-color);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .btn:hover {
+            background: #c2185b;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Floating Dealer Button */
+        .floating-dealer-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 99;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .floating-dealer-btn {
+            background: var(--accent-color);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .dealer-label {
+            margin-top: 8px;
+            color: var(--secondary-color);
+            font-size: 0.8rem;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 3px 10px;
+            border-radius: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .floating-dealer-container:hover .floating-dealer-btn {
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+            animation: none;
+        }
+
+        /* Dealer Modal */
+        .dealer-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            animation: fadeIn 0.3s;
+        }
+
+        .modal-content {
+            background: rgb(218, 178, 49);
+            margin: 10% auto;
+            padding: 30px;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 10px;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #aaa;
+        }
+
+        .dealer-benefits {
+            margin: 20px 0;
+            padding: 15px;
+            background: #3650df;
+            border-radius: 8px;
+        }
+
+        .dealer-benefits ul {
+            padding-left: 20px;
+        }
+
+        .dealer-benefits li {
+            margin-bottom: 8px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            flex: 1;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary-color);
+            padding: 12px 25px;
+            border: 1px solid var(--primary-color);
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            flex: 1;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary-color);
+            color: white;
+            padding: 40px 20px;
+            margin-top: 40px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-bottom: 20px;
+        }
+
+        .footer-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .footer-section p, .footer-section a {
+            color: #ccc;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            text-decoration: none;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .footer-section a:hover {
+            color: var(--primary-color);
+            text-decoration: underline;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .social-icons a {
+            color: #ccc;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: var(--primary-color);
+        }
+
+        .copyright {
+            text-align: center;
+            padding: 20px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-bar {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px 20px;
+            }
+
+            .nav-buttons {
+                justify-content: center;
+                gap: 10px;
+            }
+
+            .hero-section {
+                height: 50vh;
+                min-height: 300px;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                padding: 20px;
+            }
+
+            .modal-content {
+                width: 90%;
+                margin: 20% auto;
+            }
+
+            .modal-buttons {
+                flex-direction: column;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .social-icons {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-content h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero-content p {
+                font-size: 1rem;
+            }
+
+            .nav-buttons button, .nav-buttons a {
+                padding: 8px 15px;
+                font-size: 0.8rem;
+            }
+
+            .product-card {
+                margin: 0 auto;
+            }
+
+            .floating-dealer-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+
+            .dealer-label {
+                font-size: 0.7rem;
+            }
         }
     </style>
 </head>
 <body>
-
+    <!-- Navigation -->
     <nav class="nav-bar">
-        <div class="logo">Fashion Hub UG</div>
+        <a href="#" class="logo">Fashion Hub UG</a>
         <div class="nav-buttons">
-
-            <button onclick="filterProducts('all')">All Products</button>
-            <button onclick="filterProducts('men')">Men</button>
-            <button onclick="filterProducts('women')">Women</button>
-            <button onclick="filterProducts('kids')">Kids</button>
-            <a href="cart.html">🛒 Cart <span class="cart-counter">0</span></a>
-            <a href="my order.html"> My orders <span class="cart-counter">0</span></a>
-    
-            <button onclick="window.location.href='auth.html'">Sign Up</button>
-            <button onclick="window.location.href='auth.html'">Login</button>
+            <button onclick="filterProducts('all')" aria-label="Show all products">All Products</button>
+            <button onclick="filterProducts('men')" aria-label="Show men's products">Men</button>
+            <button onclick="filterProducts('women')" aria-label="Show women's products">Women</button>
+            <button onclick="filterProducts('kids')" aria-label="Show kids' products">Kids</button>
+            <a href="cart.html" id="cartLink" aria-label="View cart">
+                <i class="fas fa-shopping-cart"></i> Cart
+                <span id="cartCounter" class="cart-count">0</span>
+            </a>
+            <!-- Dynamic auth section -->
+            <div id="authSection">
+                <!-- Content will be filled by JavaScript -->
+            </div>
         </div>
-    </div>
-  </div>
     </nav>
 
-    <div class="hero">
-        <h1>Shop Uganda's Finest Fashion Online</h1>
-        <p>Discover curated collections from local designers and international brands</p>
-        <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="🔍 Search dresses, shoes, accessories...">
+    <!-- Hero Video Section -->
+    <section class="hero-section">
+        <video autoplay muted loop class="hero-video">
+            <source src="men_clothes/vide.mp4" type="video/mp4">
+            Your browser does not support HTML5 video.
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Discover Uganda's Finest Fashion</h1>
+            <p>Shop the latest trends in African-inspired clothing for men, women, and children. Handcrafted with love by local designers.</p>
+            <a href="#products" class="hero-btn">Shop Now</a>
         </div>
-    </div>
-    <button class="floating-dealer-btn" onclick="toggleDealerPanel()">
-        Dealers Click Here<br>to Join
-    </button>
+    </section>
 
-    <div id="dealerPanel" class="dealer-panel">
-        <div class="panel-content">
-            <h2>For Dealers: Grow Your Business With Us!</h2>
-            <div class="dealer-benefits">
-                <ul>
-                    <li>📈 Access thousands of active buyers</li>
-                    <li>🛍️ List your products easily</li>
-                    <li>💼 Manage your inventory in real-time</li>
-                    <li>🚀 Boost your sales with our platform</li>
-                </ul>
-            </div>
-            <div class="cta-buttons">
-                <button class="cta-btn" onclick="location.href='dealer.html'">
-                    Sign up as Dealer
-                </button>
-                <button class="cta-btn" onclick="location.href='dealer.html'">
-                    Login
-                </button>
-                <p class="dealer-stats">Already helping <span data-count="500">500+</span> dealers succeed</p>
-            </div>
-        </div>
+    <!-- Product Grid -->
+    <div class="product-grid" id="productGrid">
+        <!-- Products will be loaded here -->
     </div>
 
-    <div class="tagline">
-        <h2>New Arrivals 🌟</h2>
-        <p>Shop the latest trends in Ugandan fashion</p>
-    </div>
-
-    <div class="product-grid">
-        <div class="product-card"
-             data-product-id="1"
-             data-product-name="African Print Maxi Dress"
-             data-product-price="80000"
-             data-product-image="https://images.unsplash.com/photo-1581044777550-4cfa60707c03?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
-             data-product-category="women"
-             data-product-description="Elegant African print maxi dress for women|Material:Cotton|Sizes:S,M,L|Care:Hand wash">
-            <a href="product-details.html?id=1&name=African%20Print%20Maxi%20Dress&image=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1581044777550-4cfa60707c03%3Fixlib%3Drb-1.2.1%26auto%3Dformat%26fit%3Dcrop%26w%3D634%26q%3D80&price=80000&description=Elegant%20African%20print%20maxi%20dress%7CMaterial%3ACotton%7CSizes%3AS%2CM%2CL%7CCare%3AHand%20wash">
-                <img src="https://images.unsplash.com/photo-1581044777550-4cfa60707c03?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
-                     alt="African Print Dress"
-                     class="product-image">
-            </a>
-            <div class="product-info">
-                <h3>African Print Maxi Dress</h3>
-                <p class="product-price">UGX 80,000</p>
-                <button class="btn" onclick="addToCart(this)">Add to Cart</button>
-            </div>
-        </div>
-
-        <div class="product-card"
-             data-product-id="1.1"
-             data-product-name="69 T-Shirt"
-             data-product-price="30000"
-             data-product-image="men_clothes/69 t-shirt.png"
-             data-product-category="men"
-             data-product-description="Cool '69' printed t-shirt for men|Material:Polyester|Sizes:M,L,XL|Care:Machine wash">
-            <a href="product-details.html?id=1.1&name=69%20T-Shirt&image=men_clothes%2F69%20t-shirt.png&price=30000&description=Cool%20'69'%20printed%20t-shirt%7CMaterial%3APolyester%7CSizes%3AM%2CL%2CXL%7CCare%3AMachine%20wash">
-                <img src="men_clothes/69 t-shirt.png"
-                     alt="69 T-Shirt"
-                     class="product-image">
-            </a>
-            <div class="product-info">
-                <h3>69 T-Shirt</h3>
-                <p class="product-price">UGX 30,000</p>
-                <button class="btn" onclick="addToCart(this)">Add to Cart</button>
-            </div>
-        </div>
-
-        <div class="product-card"
-             data-product-id="1.2"
-             data-product-name="Lace-Up Shoes"
-             data-product-price="200000"
-             data-product-image="men_clothes/lace shoes.png"
-             data-product-category="men"
-             data-product-description="Classic lace-up leather shoes for men|Material:Leather|Sizes:40,41,42|Care:Polish regularly">
-            <a href="product-details.html?id=1.2&name=Lace-Up%20Shoes&image=men_clothes%2Flace%20shoes.png&price=200000&description=Classic%20lace-up%20leather%20shoes%7CMaterial%3ALeather%7CSizes%3A40%2C41%2C42%7CCare%3APolish%20regularly">
-                <img src="men_clothes/lace shoes.png"
-                     alt="Lace-Up Shoes"
-                     class="product-image">
-            </a>
-            <div class="product-info">
-                <h3>LaceShoes</h3>
-                <p class="product-price">UGX 200,000</p>
-                <button class="btn" onclick="addToCart(this)">Add to Cart</button>
-            </div>
-        </div>
-
-        <div class="product-card"
-             data-product-id="1.3"
-             data-product-name="Men's Two-Piece Simple Set"
-             data-product-price="130000"
-             data-product-image="men_clothes/men two simple set.png"
-             data-product-category="men"
-             data-product-description="Comfortable two-piece casual set for men|Material:Cotton blend|Sizes:M,L,XL|Care:Machine wash">
-            <a href="product-details.html?id=1.3&name=Men's%20Two-Piece%20Simple%20Set&image=men_clothes%2Fmen%20two%20simple%20set.png&price=130000&description=Comfortable%20two-piece%20casual%20set%7CMaterial%3ACotton%20blend%7CSizes%3AM%2CL%2CXL%7CCare%3AMachine%20wash">
-                <img src="men_clothes/men two simple set.png"
-                     alt="Men's Two-Piece Simple Set"
-                     class="product-image">
-            </a>
-            <div class="product-info">
-                <h3>Men's Two-Piece Simple Set</h3>
-                <p class="product-price">UGX 130,000</p>
-                <button class="btn" onclick="addToCart(this)">Add to Cart</button>
-            </div>
-        </div>
-
-        <div class="product-card"
-             data-product-id="1.4"
-             data-product-name="Another Men's Two-Piece Set"
-             data-product-price="100000"
-             data-product-image="men_clothes/men two simple set.png"
-             data-product-category="men"
-             data-product-description="Stylish men's casual two-piece set|Material:Linen blend|Sizes:S,M,L|Care:Dry clean only">
-            <a href="product-details.html?id=1.4&name=Another%20Men's%20Two-Piece%20Set&image=men_clothes%2Fmen%20two%20simple%20set.png&price=100000&description=Stylish%20men's%20casual%20two-piece%20set%7CMaterial%3ALinen%20blend%7CSizes%3AS%2CM%2CL%7CCare%3ADry%20clean%20only">
-                <img src="men_clothes/men two simple set.png"
-                     alt="Another Men's Two-Piece Set"
-                     class="product-image">
-            </a>
-            <div class="product-info">
-                <h3>Another Men's Two-Piece Set</h3>
-                <p class="product-price">UGX 100,000</p>
-                <button class="btn" onclick="addToCart(this)">Add to Cart</button>
-            </div>
-        </div>
-
-        <div class="product-card"
-             data-product-id="1.5"
-             data-product-name="Lacoste Polo Krekls T-Shirt"
-             data-product-price="40000"
-             data-product-image="men_clothes/lacoste polo krekls t-shirt.png"
-             data-product-category="men"
-             data-product-description="Classic Lacoste polo t-shirt for men|Material:Cotton|Sizes:S,M,L,XL|Care:Machine wash">
-            <a href="product-details.html?id=1.5&name=Lacoste%20Polo%20Krekls%20T-Shirt&image=men_clothes%2Flacoste%20polo%20krekls%20t-shirt.png&price=40000&description=Classic%20Lacoste%20polo%20t-shirt%7CMaterial%3ACotton%7CSizes%3AS%2CM%2CL%2CXL%7CCare%3AMachine%20wash">
-                <img src="men_clothes/lacoste polo krekls t-shirt.png"
-                     alt="Lacoste Polo Krekls T-Shirt"
-                     class="product-image">
-            </a>
-            <div class="product-info">
-                <h3>Lacoste Polo Krekls</h3>
-                <p class="product-price">UGX 40,000</p>
-                <button class="btn" onclick="addToCart(this)">Add to Cart</button>
-            </div>
-        </div>
-
-        <div class="product-card"
-             data-product-id="1.6"
-             data-product-name="Two-Piece Casual Wear"
-             data-product-price="180000"
-             data-product-image="men_clothes/2 set casual wear.png"
-             data-product-category="men"
-             data-product-description="Stylish two-piece casual wear for men|Material:Rayon blend|Sizes:M,L|Care:Hand wash">
-            <a href="product-details.html?id=1.6&name=Two-Piece%20Casual%20Wear&image=men_clothes%2F2%20set%20casual%20wear.png&price=180000&description=Stylish%20two-piece%20casual%20wear%7CMaterial%3ARayon%20blend%7CSizes%3AM%2CL%7CCare%3AHand%20wash">
-                <img src="men_clothes/2 set casual wear.png"
-                     alt="Two-Piece Casual Wear"
-                     class="product-image">
-            </a>
-            <div class="product-info">
-                <h3>Two-Piece Casual Wear</h3>
-                <p class="product-price">UGX 180,000</p>
-                <button class="btn" onclick="addToCart(this)">Add to Cart</button>
-            </div>
-        </div>
-    </div>
-
-    <footer style="background: #2d3436; color: white; padding: 2rem; margin-top: 3rem;">
-        <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
-            <div>
-                <h3 style="color: #e91e63; margin-bottom: 1rem;">About Fashion Hub</h3>
-                <p style="font-size: 0.9rem; line-height: 1.6;">
-                    We're Uganda's premier online fashion destination, connecting local designers with fashion-conscious
-                    customers. Our mission is to make African fashion accessible to everyone while supporting local artisans.
-                </p>
-            </div>
-            <div>
-                <h3 style="color: #e91e63; margin-bottom: 1rem;">Quick Links</h3>
-                <ul style="list-style: none; padding: 0;">
-                    <li style="margin-bottom: 0.5rem;">
-                        <a href="/shipping" style="color: white; text-decoration: none;">Shipping Policy</a>
-                    </li>
-                    <li style="margin-bottom: 0.5rem;">
-                        <a href="/returns" style="color: white; text-decoration: none;">Return & Exchange</a>
-                    </li>
-                    <li style="margin-bottom: 0.5rem;">
-                        <a href="/faq" style="color: white; text-decoration: none;">FAQ</a>
-                    </li>
-                    <li style="margin-bottom: 0.5rem;">
-                        <a href="/size-guide" style="color: white; text-decoration: none;">Size Guide</a>
-                    </li>
-                </ul>
-            </div>
-            <div>
-                <h3 style="color: #e91e63; margin-bottom: 1rem;">Contact Us</h3>
-                <div style="margin-bottom: 0.5rem;">📧 Email: <a href="mailto:info@fashionhub.ug" style="color: white; text-decoration: none;">info@fashionhub.ug</a></div>
-                <div style="margin-bottom: 0.5rem;">📞 Phone: <a href="tel:+256700123456" style="color: white; text-decoration: none;">+256 700 123 456</a></div>
-                <div>📍 Address: Plot 42, Kampala Road, Kampala, Uganda</div>
-            </div>
-            <div>
-                <h3 style="color: #e91e63; margin-bottom: 1rem;">Follow Us</h3>
-                <div style="display: flex; gap: 1rem;">
-                    <a href="#" style="color: white; font-size: 1.5rem;"><i class="fab fa-facebook"></i></a>
-                    <a href="#" style="color: white; font-size: 1.5rem;"><i class="fab fa-instagram"></i></a>
-                    <a href="#" style="color: white; font-size: 1.5rem;"><i class="fab fa-twitter"></i></a>
-                    <a href="#" style="color: white; font-size: 1.5rem;"><i class="fab fa-whatsapp"></i></a>
-                </div>
-                <div style="margin-top: 1.5rem;">
-                    <h4 style="margin-bottom: 0.5rem;">Newsletter</h4>
-                    <input type="email" placeholder="Enter your email" style="padding: 0.5rem; border-radius: 4px; border: none; margin-right: 0.5rem;">
-                    <button style="padding: 0.5rem 1rem; background: #e91e63; border: none; color: white; border-radius: 4px; margin-top: 0.5rem;">Subscribe</button>
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Us</h3>
+                <p>Fashion Hub Uganda is your premier destination for authentic African fashion. We connect local designers with fashion lovers worldwide.</p>
+                <div class="social-icons">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
                 </div>
             </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="#">Home</a>
+                <a href="#">New Arrivals</a>
+                <a href="#">Best Sellers</a>
+                <a href="my order.html">My Orders</a>
+                <a href="#">Contact Us</a>
+            </div>
+            <div class="footer-section">
+                <h3>Customer Service</h3>
+                <a href="#">My Account</a>
+                <a href="#">Order Tracking</a>
+                <a href="#">Shipping Policy</a>
+                <a href="#">Returns & Exchanges</a>
+                <a href="#">FAQs</a>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Kampala Road, Kampala, Uganda</p>
+                <p><i class="fas fa-phone"></i> +256 700 123456</p>
+                <p><i class="fas fa-envelope"></i> info@fashionhubug.com</p>
+            </div>
         </div>
-        <div style="text-align: center; margin-top: 2rem; border-top: 1px solid #444; padding-top: 1rem;">
-            © 2023 Fashion Hub Uganda. All rights reserved.
-        </div>
-        <div class="whatsapp-support">
-            <a href="https://wa.me/256703718511" target="_blank" rel="noopener noreferrer">
-                <i class="fab fa-whatsapp"></i>
-                <span class="tooltip">Chat with Support</span>
-            </a>
+        <div class="copyright">
+            <p>© 2023 Fashion Hub Uganda. All rights reserved.</p>
         </div>
     </footer>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Floating Dealer Button -->
+    <div class="floating-dealer-container" onclick="showDealerOnboarding()">
+        <div class="floating-dealer-btn">
+            <i class="fas fa-store"></i>
+        </div>
+        <div class="dealer-label">Dealers here</div>
+    </div>
+
+    <!-- Dealer Modal -->
+    <div id="dealerModal" class="dealer-modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="hideDealerModal()" aria-label="Close modal">×</span>
+            <h2>Join Our Dealer Network</h2>
+            <p>Sell your fashion products on Fashion Hub Uganda and reach thousands of customers!</p>
+            <div class="dealer-benefits">
+                <h3><i class="fas fa-check-circle"></i> Benefits:</h3>
+                <ul>
+                    <li>Product listing</li>
+                    <li>Marketing support</li>
+                    <li>Secure payments</li>
+                    <li>24/7 customer support</li>
+                </ul>
+            </div>
+            <div class="modal-buttons">
+                <button onclick="window.location.href='dealer-login.html'" class="btn-primary">Sign Up Now</button>
+                <button onclick="window.location.href='admin-login.html'" class="btn-secondary">Admin login</button>
+            </div>
+        </div>
+    </div>
 
     <script>
-        // ========== INITIALIZE CART COUNTER ==========
-        document.addEventListener('DOMContentLoaded', function() {
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            document.querySelectorAll('.cart-counter').forEach(el => {
-                el.textContent = cart.length;
+        // Product data
+        const products = [
+            {
+                id: "w1",
+                name: "African Print Dress",
+                price: 80000,
+                image: "https://images.unsplash.com/photo-1585487000160-6ebcfceb0d03?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80",
+                category: "women",
+                description: "Beautiful African print dress made with high-quality fabric. Perfect for special occasions and everyday wear. Available in various sizes and patterns."
+            },
+            {
+                id: "w2",
+                name: "Kitenge Jumpsuit",
+                price: 95000,
+                image: "https://images.unsplash.com/photo-1551232864-3f0890e580d9?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80",
+                category: "women",
+                description: "Stylish Kitenge jumpsuit with modern cut. Comfortable and fashionable for any event."
+            },
+            {
+                id: "m1",
+                name: "Graphic T-Shirt",
+                price: 30000,
+                image: "https://images.unsplash.com/photo-1527719327859-c6ce80353573?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80",
+                category: "men",
+                description: "Cool graphic t-shirt for men with premium cotton fabric. Comfortable for all-day wear. Multiple designs available."
+            },
+            {
+                id: "m2",
+                name: "African Print Shirt",
+                price: 45000,
+                image: "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80",
+                category: "men",
+                description: "Traditional African print shirt with modern tailoring. Perfect for both casual and formal occasions."
+            },
+            {
+                id: "k1",
+                name: "Kids T-Shirt",
+                price: 25000,
+                image: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80",
+                category: "kids",
+                description: "Cute t-shirt for kids with fun designs. Soft and comfortable fabric that's gentle on children's skin. Various sizes from 2-12 years."
+            },
+            {
+                id: "k2",
+                name: "Children's Kitenge Set",
+                price: 40000,
+                image: "https://images.unsplash.com/photo-1609505848912-b7c3b8b4beda?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80",
+                category: "kids",
+                description: "Adorable matching Kitenge set for children. Includes top and bottom with traditional patterns."
+            }
+        ];
+
+        // Initialize cart from localStorage
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        // Check authentication status and update UI
+        function checkAuthStatus() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const authSection = document.getElementById('authSection');
+            
+            if (isLoggedIn) {
+                // User is logged in - show profile dropdown
+                const user = JSON.parse(localStorage.getItem('user')) || {};
+                
+                authSection.innerHTML = `
+                    <div class="profile-dropdown">
+                        <button class="profile-btn">
+                            <img src="${user.profilePic || 'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png'}" 
+                                alt="Profile" class="profile-pic">
+                            ${user.name || 'Profile'}
+                        </button>
+                        <div class="profile-dropdown-content">
+                            <a href="profile.html">My Profile</a>
+                            <a href="my orders.html">My Orders</a>
+                            <a href="#" onclick="logout()">Logout</a>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // User is not logged in - show login button
+                authSection.innerHTML = `
+                    <button onclick="window.location.href='auth.html'" id="authButton" aria-label="Login or sign up">
+                        Login/Sign up
+                    </button>
+                `;
+            }
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('user');
+            window.location.href = 'index.html';
+        }
+
+        // Display products
+        function displayProducts(productsToShow) {
+            const productGrid = document.getElementById('productGrid');
+            productGrid.innerHTML = '';
+
+            if (productsToShow.length === 0) {
+                productGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">No products found in this category.</p>';
+                return;
+            }
+
+            productsToShow.forEach((product, index) => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.style.animationDelay = `${index * 0.1}s`;
+                productCard.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}" class="product-image" 
+                         onclick="showProductDetail('${product.id}')">
+                    <div class="product-info">
+                        <h3>${product.name}</h3>
+                        <p class="product-price">UGX ${product.price.toLocaleString()}</p>
+                        <button class="btn" onclick="addToCart('${product.id}', event)" aria-label="Add ${product.name} to cart">
+                            <i class="fas fa-cart-plus"></i> Add to Cart
+                        </button>
+                    </div>
+                `;
+                productGrid.appendChild(productCard);
             });
-        });
+        }
 
-        // ========== ADD TO CART FUNCTION ==========
-        function addToCart(event) {
-            event.stopPropagation();
-            const card = event.target.closest('.product-card');
+        // Show product detail
+        function showProductDetail(productId) {
+            window.location.href = `product-details.html?id=${productId}`;
+        }
 
-            const product = {
-                name: card.dataset.productName,
-                price: `UGX ${parseInt(card.dataset.productPrice).toLocaleString()}`,
-                image: card.dataset.productImage,
-                rawPrice: card.dataset.productPrice,
-                category: card.dataset.productCategory
+        // Filter products
+        function filterProducts(category) {
+            if (category === 'all') {
+                displayProducts(products);
+            } else {
+                const filtered = products.filter(p => p.category === category);
+                displayProducts(filtered);
+            }
+
+            document.getElementById('productGrid').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // Add to cart function
+        function addToCart(productId, event) {
+            event.stopPropagation(); // Prevent triggering the product detail click
+            
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            const cartItem = {
+                id: product.id,
+                name: product.name,
+                price: `UGX ${product.price.toLocaleString()}`,
+                rawPrice: product.price, // Store numeric price for calculations
+                image: product.image,
+                size: 'M', // Default size
+                quantity: 1,
+                dealerId: product.id.startsWith('w') ? 'dealer1' : 'dealer2'
             };
 
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            cart.push(product);
+            // Check if item already exists in cart
+            const existingItemIndex = cart.findIndex(item => 
+                item.id === productId && item.size === cartItem.size
+            );
+            
+            if (existingItemIndex >= 0) {
+                // Update quantity if item exists
+                cart[existingItemIndex].quantity += 1;
+            } else {
+                // Add new item if it doesn't exist
+                cart.push(cartItem);
+            }
+            
             localStorage.setItem('cart', JSON.stringify(cart));
-
-            // Update cart counter
-            document.querySelectorAll('.cart-counter').forEach(el => {
-                el.textContent = cart.length;
-            });
-
-            alert(`Added to cart: ${product.name}`);
+            updateCartCounter();
+            
+            // Add visual feedback
+            const button = event.target.closest('button');
+            if (button) {
+                button.classList.add('pulse-animation');
+                setTimeout(() => {
+                    button.classList.remove('pulse-animation');
+                }, 500);
+            }
         }
 
-        // ========== SEARCH FUNCTIONALITY ==========
-        document.getElementById('searchInput').addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            document.querySelectorAll('.product-card').forEach(card => {
-                const productName = card.dataset.productName.toLowerCase();
-                card.style.display = productName.includes(searchTerm) ? 'block' : 'none';
-            });
+        // Update cart counter
+        function updateCartCounter() {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartCounter').textContent = totalItems;
+        }
+
+        // Dealer modal functions
+        function showDealerOnboarding() {
+            document.getElementById('dealerModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideDealerModal() {
+            document.getElementById('dealerModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('dealerModal');
+            if (event.target === modal) {
+                hideDealerModal();
+            }
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthStatus();
+            displayProducts(products);
+            updateCartCounter();
         });
-
-        function filterProducts(category) {
-            document.querySelectorAll('.product-card').forEach(card => {
-                const shouldShow = category === 'all' || card.dataset.productCategory === category;
-                card.style.display = shouldShow ? 'block' : 'none';
-            });
-
-            // Optional: Add active state to buttons
-            document.querySelectorAll('.nav-buttons button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            const activeButton = Array.from(document.querySelectorAll('.nav-buttons button')).find(btn => btn.textContent.toLowerCase() === category);
-            if (activeButton) {
-                activeButton.classList.add('active');
-            } else if (category === 'all') {
-                Array.from(document.querySelectorAll('.nav-buttons button'))[0].classList.add('active'); // Assuming 'All Products' is the first button
-            }
-        }
-        // Cart Management System
-        function updateCartCount() {
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            document.querySelectorAll('.cart-counter').forEach(el => {
-                el.textContent = cart.length;
-            });
-        }
-
-        function showAddToCartConfirmation(productName) {
-            const confirmation = document.createElement('div');
-            confirmation.className = 'cart-confirmation';
-            confirmation.innerHTML = `
-                ✅ ${productName} added to cart!
-                <div class="confirmation-progress"></div>
-            `;
-
-            document.body.appendChild(confirmation);
-
-            setTimeout(() => {
-                confirmation.remove();
-            }, 3000);
-        }
-
-        // Initialize cart count on page load
-        document.addEventListener('DOMContentLoaded', updateCartCount);
-
-        // Add confirmation animation styles
-        const style = document.createElement('style');
-        style.innerHTML = `
-            .cart-confirmation {
-                position: fixed;
-                bottom: 20px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: rgba(0, 0, 0, 0.9);
-                color: white;
-                padding: 15px 25px;
-                border-radius: 30px;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                animation: slideUp 0.5s ease-out;
-                z-index: 1000;
-            }
-
-            .confirmation-progress {
-                width: 100%;
-                height: 3px;
-                background: rgba(255,255,255,0.3);
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                animation: progress 3s linear;
-            }
-
-            @keyframes slideUp {
-                from { bottom: -50px; opacity: 0; }
-                to { bottom: 20px; opacity: 1; }
-            }
-
-            @keyframes progress {
-                from { width: 100%; }
-                to { width: 0; }
-            }
-        `;
-        document.head.appendChild(style);
-    </script>
-    <script>
-        function toggleDealerPanel() {
-            const panel = document.getElementById('dealerPanel');
-            panel.classList.toggle('active');
-
-            // Close panel when clicking outside
-            if(panel.classList.contains('active')) {
-                panel.addEventListener('click', function(e) {
-                    if(e.target === panel) toggleDealerPanel();
-                });
-            }
-
-            // Close with ESC key
-            document.addEventListener('keydown', function(e) {
-                if(e.key === 'Escape' && panel.classList.contains('active')) {
-                    toggleDealerPanel();
-                }
-            });
-        }
     </script>
 </body>
 </html>

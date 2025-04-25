@@ -13,11 +13,11 @@
             margin: 0;
             display: flex;
             flex-direction: column;
-            min-height: 100vh; /* Ensure the body takes at least the full viewport height */
+            min-height: 100vh;
         }
         .main-content {
             display: flex;
-            flex: 1; /* Allow the main content to grow and take available space */
+            flex: 1;
         }
         .fashion-section {
             flex: 1;
@@ -110,7 +110,7 @@
             gap: 10px;
             flex-wrap: wrap;
         }
-        .nav-buttons a {
+        .nav-buttons a, .nav-buttons button {
             background: var(--primary-color);
             color: white;
             padding: 8px 15px;
@@ -118,24 +118,12 @@
             text-decoration: none;
             font-weight: 500;
             transition: background 0.3s ease;
-        }
-        .nav-buttons a:hover {
-            background: #c2185b;
-        }
-        .nav-buttons button {
-            background: var(--primary-color);
-            color: white;
             border: none;
-            padding: 8px 15px;
-            border-radius: 4px;
             cursor: pointer;
-            font-weight: 500;
-            transition: background 0.3s ease;
         }
-        .nav-buttons button:hover {
+        .nav-buttons a:hover, .nav-buttons button:hover {
             background: #c2185b;
         }
-        /* Footer Styles (Copied from index.html) */
         footer {
             background: #2d3436;
             color: white;
@@ -150,7 +138,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 2rem;
-            margin-bottom: 2rem; /* Add some space above the copyright */
+            margin-bottom: 2rem;
         }
         footer h3 {
             color: #e91e63;
@@ -237,7 +225,11 @@
             <a href="index.html?category=men">Men</a>
             <a href="index.html?category=women">Women</a>
             <a href="index.html?category=kids">Kids</a>
-            <button onclick="window.location.href='cart.html'">🛒 Cart <span class="cart-counter">0</span></button>
+            <a href="cart.html" id="cartLink">
+                <i class="fas fa-shopping-cart"></i> Cart
+                <span id="cartCounter" class="cart-count">0</span>
+            </a>
+            <button id="logoutButton" style="display: none;" onclick="handleLogout()">Logout</button>
         </div>
     </nav>
 
@@ -252,16 +244,16 @@
             <div class="auth-container">
                 <div id="signupForm">
                     <h2>Create Account</h2>
-                    <input type="email" id="signupEmail" placeholder="Email">
-                    <input type="password" id="signupPassword" placeholder="Password">
+                    <input type="email" id="signupEmail" placeholder="Email" required aria-required="true">
+                    <input type="password" id="signupPassword" placeholder="Password" required aria-required="true">
                     <button onclick="handleEmailSignup()">Sign Up</button>
                     <p class="auth-toggle">Already have an account? <span onclick="showLogin()">Login</span></p>
                 </div>
 
                 <div id="loginForm" style="display: none;">
                     <h2>Welcome Back</h2>
-                    <input type="email" id="loginEmail" placeholder="Email">
-                    <input type="password" id="loginPassword" placeholder="Password">
+                    <input type="email" id="loginEmail" placeholder="Email" required aria-required="true">
+                    <input type="password" id="loginPassword" placeholder="Password" required aria-required="true">
                     <button onclick="handleEmailLogin()">Login</button>
                     <p class="auth-toggle">New user? <span onclick="showSignup()">Sign up</span></p>
                 </div>
@@ -328,69 +320,106 @@
     </footer>
 
     <script>
+        const API_BASE_URL = 'http://localhost:5000/api';
+
         function showLogin() {
-            document.getElementById("signupForm").style.display = "none";
-            document.getElementById("loginForm").style.display = "block";
+            document.getElementById('signupForm').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'block';
         }
 
         function showSignup() {
-            document.getElementById("loginForm").style.display = "none";
-            document.getElementById("signupForm").style.display = "block";
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('signupForm').style.display = 'block';
         }
 
-        function handleEmailLogin() {
-            const email = document.getElementById("loginEmail").value;
-            const password = document.getElementById("loginPassword").value;
+        async function handleEmailSignup() {
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
 
-            // Replace with your actual Firebase authentication logic
-            if (email && password) {
-                alert("Login functionality needs Firebase setup.");
-                // Example redirect after (simulated) successful login
-                // window.location.href = "index.html";
-            } else {
-                alert("Please enter your email and password.");
+            if (!email || !password) {
+                alert('Please enter your email and password.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/signup`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await response.json();
+
+                if (response.ok) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('userId', data.userId);
+                    localStorage.setItem('email', data.email);
+                    alert('Signup successful! Redirecting to homepage.');
+                    window.location.href = 'index.html';
+                } else {
+                    alert(data.error || 'Signup failed.');
+                }
+            } catch (err) {
+                console.error('Signup error:', err);
+                alert('An error occurred. Please try again.');
             }
         }
 
-        function handleEmailSignup() {
-            const email = document.getElementById("signupEmail").value;
-            const password = document.getElementById("signupPassword").value;
+        async function handleEmailLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
 
-            // Replace with your actual Firebase authentication logic
-            if (email && password) {
-                alert("Signup functionality needs Firebase setup.");
-                showLogin(); // Optionally redirect to login after (simulated) signup
-            } else {
-                alert("Please enter your email and password to sign up.");
+            if (!email || !password) {
+                alert('Please enter your email and password.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await response.json();
+
+                if (response.ok) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('userId', data.userId);
+                    localStorage.setItem('email', data.email);
+                    alert('Login successful! Redirecting to homepage.');
+                    window.location.href = 'index.html';
+                } else {
+                    alert(data.error || 'Login failed.');
+                }
+            } catch (err) {
+                console.error('Login error:', err);
+                alert('An error occurred. Please try again.');
             }
         }
 
-        // You would typically initialize Firebase here with your config
-        // const firebaseConfig = { ... };
-        // firebase.initializeApp(firebaseConfig);
+        function handleLogout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('userId');
+            localStorage.removeItem('email');
+            alert('Logged out successfully!');
+            window.location.reload();
+        }
 
-        // Example of how you might handle auth state changes with Firebase
-        // firebase.auth().onAuthStateChanged((user) => {
-        //     if (user) {
-        //         // User is signed in
-        //         console.log('User is signed in:', user);
-        //         // Update UI accordingly
-        //     } else {
-        //         // User is signed out
-        //         console.log('User is signed out');
-        //         // Update UI accordingly
-        //     }
-        // });
-
-        // Example logout function (if you implement it)
-        // function handleLogout() {
-        //     firebase.auth().signOut().then(() => {
-        //         alert("Logged out successfully!");
-        //         window.location.reload();
-        //     }).catch((error) => {
-        //         alert("Logout failed: " + error.message);
-        //     });
-        // }
+        // Update UI based on auth state
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('token');
+            const logoutButton = document.getElementById('logoutButton');
+            if (token) {
+                logoutButton.style.display = 'inline-block';
+                document.getElementById('signupForm').style.display = 'none';
+                document.getElementById('loginForm').style.display = 'none';
+                document.querySelector('.auth-container').innerHTML += `
+                    <h2>Welcome, ${localStorage.getItem('email')}</h2>
+                    <p>You are already logged in.</p>
+                    <button onclick="window.location.href='index.html'">Go to Homepage</button>
+                    <button onclick="handleLogout()">Logout</button>
+                `;
+            }
+        });
     </script>
 </body>
 </html>

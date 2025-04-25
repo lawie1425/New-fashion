@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Fashion Hub UG</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #e91e63;
+            --secondary-color: #2d3436;
+            --text-light: #666;
+            --transition: all 0.3s ease;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: #f5f5f5;
+        }
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--secondary-color);
+            padding: 10px 20px;
+            color: white;
+            flex-wrap: wrap;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .nav-buttons a, .nav-buttons button {
+            background: var(--primary-color);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+        .nav-buttons a:hover, .nav-buttons button:hover {
+            background: #c2185b;
+        }
+        .login-container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        h2 {
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        button:hover {
+            background: #c2185b;
+        }
+        #loginMessage {
+            margin-top: 1rem;
+            color: var(--text-light);
+        }
+        footer {
+            background: var(--secondary-color);
+            color: white;
+            padding: 2rem;
+            margin-top: auto;
+            text-align: center;
+        }
+        footer p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+        @media (max-width: 768px) {
+            .nav-bar {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .login-container {
+                margin: 20px;
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <div class="logo">Fashion Hub UG</div>
+        <div class="nav-buttons">
+            <a href="index.html?category=all">All Products</a>
+            <button id="logoutButton" style="display: none;" onclick="handleLogout()">Logout</button>
+        </div>
+    </nav>
+
+    <div class="login-container">
+        <h2>Admin Login</h2>
+        <input type="email" id="adminEmail" placeholder="Admin Email" required aria-required="true">
+        <input type="password" id="adminPassword" placeholder="Password" required aria-required="true">
+        <button onclick="adminLogin()">Login</button>
+        <p id="loginMessage"></p>
+    </div>
+
+    <footer>
+        <p>© 2023 Fashion Hub Uganda. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:5000/api';
+
+        async function adminLogin() {
+            const email = document.getElementById('adminEmail').value;
+            const password = document.getElementById('adminPassword').value;
+            const loginMessage = document.getElementById('loginMessage');
+
+            if (!email || !password) {
+                loginMessage.textContent = 'Please enter your email and password.';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/admin-login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await response.json();
+
+                loginMessage.textContent = data.message;
+                if (response.ok) {
+                    localStorage.setItem('adminToken', data.token);
+                    localStorage.setItem('adminId', data.adminId);
+                    setTimeout(() => {
+                        window.location.href = 'admin-dashboard.html';
+                    }, 1000);
+                }
+            } catch (err) {
+                console.error('Admin login error:', err);
+                loginMessage.textContent = 'An error occurred. Please try again.';
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('adminToken');
+            localStorage.removeItem('adminId');
+            localStorage.removeItem('token');
+            localStorage.removeItem('userId');
+            localStorage.removeItem('email');
+            alert('Logged out successfully!');
+            window.location.href = 'admin-login.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const adminToken = localStorage.getItem('adminToken');
+            const logoutButton = document.getElementById('logoutButton');
+            if (adminToken) {
+                logoutButton.style.display = 'inline-block';
+                document.querySelector('.login-container').innerHTML = `
+                    <h2>Admin Logged In</h2>
+                    <p>You are already logged in.</p>
+                    <button onclick="window.location.href='admin-dashboard.html'">Go to Dashboard</button>
+                    <button onclick="handleLogout()">Logout</button>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>
